@@ -3,6 +3,18 @@ var app = express();
 var log = console.log;
 var port = 3700;
 var config = require("./config.json");
+var users = config.users;
+
+// Create dictionary for users and their id's
+users.forEach(function(student) {
+    users[student.id] = student;
+    if (student.id == 'sean' || student.id == 'sam' ||
+        student.id == 'jana' || student.id == 'katie' || student.id == 'pj') {
+        users['admin'] = true;
+    } else {
+        users['admin'] = false;
+    }
+});
 
 app.set('views', __dirname + '/temp');
 app.set('view engine', "jade");
@@ -10,12 +22,6 @@ app.engine('jade', require('jade').__express);
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 
-/*var pages = ['', 'deck'];
-pages.forEach(function (page) {
-    app.get('/' + page, function(req, res){
-        res.render(page || 'test');
-    });
-});*/
 // Hompage rendering
 app.get('/', function(req, res) {
 	res.render('index');
@@ -23,9 +29,9 @@ app.get('/', function(req, res) {
 
 // Checks if student is registered
 app.post('/deck', function(req, res) {
-    var studentId = req.body.studentId;
-    console.log(config.student[studentId]);
-    if (config.student[studentId]) {
+    var studentId = req.body.studentId.toLowerCase();
+    console.log(users[studentId]);
+    if (users[studentId]) {
         res.cookie('studentId', studentId);
         res.render('deck');
     } else {
