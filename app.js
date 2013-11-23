@@ -16,19 +16,22 @@ pages.forEach(function (page) {
 
 app.use(express.static(__dirname + '/public'));
 
-var master;
+var masterSocket;
 
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
 
     socket.on('setMaster', function () {
-        master = socket.id;
+    	if (masterSocket && socket.id != masterSocket.id) {
+    		masterSocket.emit('isMaster', false);
+    	}
+        masterSocket = socket;
         socket.emit('isMaster', true);
     });
 
     socket.on('moveTo', function (index) {
-        if (socket.id == master) {
+        if (masterSocket && socket.id == masterSocket.id) {
             io.sockets.emit('masterMove', index);
         }
     });
