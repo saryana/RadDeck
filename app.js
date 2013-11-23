@@ -7,8 +7,13 @@ var master;
 app.set('views', __dirname + '/temp');
 app.set('view engine', "jade");
 app.engine('jade', require('jade').__express);
+
 app.get("/", function(req, res){
     res.render("test");
+});
+
+app.get("/deck", function(req, res){
+    res.render("deck");
 });
 
 app.use(express.static(__dirname + '/public'));
