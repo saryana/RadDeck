@@ -93,4 +93,12 @@ socket.on('connect', function () {
         }
     });
 
+    if (!document.cookie) {
+        var id = prompt("Please enter your Student/Admin ID: ");
+        console.log(id);
+        document.cookie = "id=" + id;
+    } else {
+        
+    }
+
 });
