@@ -1,0 +1,38 @@
+!!! 5
+html
+    head
+        title RadDeck
+        link(rel='stylesheet', href='/deck.css')
+    body
+        #menu
+            #questions.menu-button ?
+            #previous.menu-button ⇦
+            #next.menu-button ⇨
+        #questions-area.menu-area
+            div(style='white-space: nowrap;')
+                div Top questions
+                div Newest questions
+                div Ask a question                                        
+        #slides
+            #area
+                .slide
+                    h2 What is RadDeck?
+                    ul
+                        li Real-time
+                        li Audience
+                        li Dialogue
+                .slide
+                    h2 Questions
+                    ul
+                        li Students ask
+                        li Students vote
+                        li Professors answer
+                .slide
+                    h2 Steps
+                    ol
+                        li Cut a hole in a box
+                        li Put your junk in that box
+                        li Make her open the box
+
+        script(src='/zepto.js')
+        script(src='/deck.js')

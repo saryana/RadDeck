@@ -1,0 +1,140 @@
+html {
+    position: relative;
+    font: normal 60px Arial;
+    height: 100%;
+}
+
+html, body {
+    overflow: hidden;
+}
+
+#menu {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1.6em;
+    border-right: 0.04em solid #bbb;
+    background: #ddd; /* Old browsers */
+    background: -moz-linear-gradient(left, #aaa 0%, #ddd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#aaa), color-stop(100%,#ddd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, #aaa 0%,#ddd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #aaa 0%,#ddd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #aaa 0%,#ddd 100%); /* IE10+ */
+    background: linear-gradient(to right, #aaa 0%,#ddd 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aaaaaa', endColorstr='#dddddd',GradientType=1 ); /* IE6-9 */
+    overflow: hidden;
+    opacity: 0.95;
+}
+
+.menu-area {
+    position: absolute;
+    background: #ddd;
+    left: 1.6em;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-right: 0.04em solid #bbb;
+    z-index: 2;
+    overflow: hidden;
+    transition: width 0.5s
+}
+
+.menu-area.on {
+    width: 15em;
+}
+
+.menu-button {
+    display: block;
+    background: #ccc;
+    margin: 0.5em auto;
+    width: 1.3em;
+    height: 1.3em;
+    border: 0.04em solid #666;
+    border-radius: 0.2em;
+    text-align: center;
+    opacity: 0.5;
+    text-shadow: 0.03em 0.03em #fff;
+    cursor: pointer;
+}
+
+#slides {
+    position: absolute;
+    z-index: 1
+    background: #fff;
+    top: 0;
+    bottom: 0;
+    left: 1.6em;
+    right: 0;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+}
+
+#area {
+    position: relative;
+    margin-left: 1em;
+}
+
+@media (orientation: portrait) {
+    #menu {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1.6em;
+        width: 100%;
+        top: auto;
+        border-top: 0.04em solid #bbb;
+        background: #ddd; /* Old browsers */
+        background: -moz-linear-gradient(top, #aaa 0%, #ddd 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, bottom left, bottom right, color-stop(0%,#aaa), color-stop(100%,#ddd)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(bottom, #aaa 0%,#ddd 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(bottom, #aaa 0%,#ddd 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(bottom, #aaa 0%,#ddd 100%); /* IE10+ */
+        background: linear-gradient(to top, #aaa 0%,#ddd 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aaaaaa', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+    }
+    
+    .menu-area {
+        left: 0;
+        right: 0;
+        width: 100%;
+        top: auto;
+        bottom: 0;
+        height: 0;
+        border-top: 0.04em solid #bbb;
+        transition: height 0.5s;
+    }
+
+    .menu-area.on {
+        height: 10em;
+    }
+    
+    .menu-button {
+        display: block;
+        background: #ccc;
+        margin: 0.15em 0.5em;
+        width: 1.3em;
+        height: 1.3em;
+        border: 0.04em solid #666;
+        border-radius: 0.2em;
+        text-align: center;
+        opacity: 0.5;
+        text-shadow: 0.03em 0.03em #fff;
+        cursor: pointer;
+        float: left;
+    }
+    
+    #slides {
+        position: absolute;
+        z-index: 1
+        background: #fff;
+        top: 0;
+        bottom: 0;
+        left: 1.6em;
+        right: 0;
+    }
+}
