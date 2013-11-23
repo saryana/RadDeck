@@ -30,14 +30,13 @@ app.get('/', function(req, res) {
 // Checks if student is registered
 app.post('/deck', function(req, res) {
     var studentId = req.body.studentId.toLowerCase();
-    console.log(users[studentId]);
     if (users[studentId]) {
         res.cookie('studentId', studentId);
         res.render('deck');
     } else {
         res.render('login');
     }
-})
+});
 
 // If student is logged in will go straight to decks
 app.get('/deck', function(req, res) {
@@ -47,6 +46,7 @@ app.get('/deck', function(req, res) {
         res.render('deck');
     }
 });
+
 app.use(express.static(__dirname + '/public'));
 
 var masterSocket;
@@ -54,7 +54,6 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
-
     socket.on('setMaster', function () {
     	if (masterSocket && socket.id != masterSocket.id) {
     		masterSocket.emit('isMaster', false);
