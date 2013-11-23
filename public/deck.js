@@ -1,8 +1,9 @@
 var onResize = function () {
     var w = $(window).height();
     var h = $(window).width();
-    console.log(s = Math.min(w / 12, h / 9));
-    document.body.style.fontSize = s + 'px';
+    var s = Math.min(w / 12, h / 9);
+    $('body').css('fontSize', s + 'px');
+    $('textarea').css('fontSize', (s * 0.8) + 'px');
 };
 
 var moveTo = function (index) {
@@ -72,4 +73,11 @@ socket.on('connect', function () {
         }
     });
 
+    if (!/studentId/.test(document.cookie)) {
+        //prompt('Please enter your student ID.');
+    }
 });
+
+setTimeout(function () {
+    location.reload();
+}, 2000);

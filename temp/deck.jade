@@ -10,12 +10,18 @@ html
             #previous.menu-button ⇦
             #next.menu-button ⇨
         #questions-area.menu-area
-            div(style='white-space: nowrap;')
-                div Top questions
-                div Newest questions
-                div Ask a question                                        
+            .menu-pad
+                #questions-section
+                    #question-tabs.menu-tabs
+                        #top-questions.menu-tab.on Top voted
+                        #new-questions.menu-tab Newest
+                    #questions-list
+                #ask-section
+                    #ask-question
+                        #ask-prompt Ask a question
+                        div: textarea#question-text
         #slides
-            #area
+            #slide-area
                 .slide
                     h2 What is RadDeck?
                     ul
@@ -39,4 +45,5 @@ html
         script(src='/zepto.js')
         script(src='/socket.io/socket.io.js')
         script(src='/deck.js')
+        script $('#questions').click()
 

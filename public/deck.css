@@ -1,11 +1,14 @@
 html {
     position: relative;
-    font: normal 60px Arial;
     height: 100%;
 }
 
 html, body {
     overflow: hidden;
+}
+
+body, textarea {
+    font: normal 60px Arial;
 }
 
 #menu {
@@ -38,30 +41,30 @@ html, body {
     border-right: 0.04em solid #bbb;
     z-index: 2;
     overflow: hidden;
-    transition: width 0.5s
+    transition: width 0.5s;
 }
 
 .menu-area.on {
-    width: 15em;
+    width: 12em;
 }
 
 .menu-button {
     display: block;
-    background: #ccc;
+    background: #9ac;
     margin: 0.5em auto;
     width: 1.3em;
     height: 1.3em;
     border: 0.04em solid #666;
     border-radius: 0.2em;
     text-align: center;
-    opacity: 0.5;
+    opacity: 1;
     text-shadow: 0.03em 0.03em #fff;
     cursor: pointer;
 }
 
 #slides {
     position: absolute;
-    z-index: 1
+    z-index: 1;
     background: #fff;
     top: 0;
     bottom: 0;
@@ -74,12 +77,63 @@ html, body {
     top: 0;
 }
 
-#area {
+#slide-area {
     position: relative;
     margin-left: 1em;
 }
 
+.menu-pad {
+    position: relative;
+    height: 100%;
+}
+
+#questions-section {
+    position: absolute;
+    top: 0.2em;
+    right: 0.5em;
+    left: 0.5em;
+    bottom: 4em;
+}
+
+#ask-section {
+    position: absolute;
+    right: 0.5em;
+    bottom: 0.2em;
+    left: 0.5em;
+    height: 3em;
+}
+
+#ask-prompt {
+    white-space: nowrap;
+    font-size: 0.8em;
+}
+
+#question-text {
+    width: 100%;
+}
+
+.menu-tabs {
+    width: 12em;
+}
+
+.menu-tab {
+    float: left;
+    padding: 0.1em;
+    font-size: 0.8em;
+    border: 0.04em solid #999;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    border-bottom: 0;
+    padding: 0.1em 0.4em;
+    margin: 0 0.2em 0 0;
+}
+
+.menu-tab.on {
+    background: #eee;
+}
+
 @media (orientation: portrait) {
+
     #menu {
         left: 0;
         right: 0;
@@ -97,7 +151,7 @@ html, body {
         background: linear-gradient(to top, #aaa 0%,#ddd 100%); /* W3C */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aaaaaa', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
     }
-    
+
     .menu-area {
         left: 0;
         right: 0;
@@ -110,9 +164,9 @@ html, body {
     }
 
     .menu-area.on {
-        height: 10em;
+        height: 8em;
     }
-    
+
     .menu-button {
         display: block;
         background: #ccc;
@@ -127,10 +181,10 @@ html, body {
         cursor: pointer;
         float: left;
     }
-    
+
     #slides {
         position: absolute;
-        z-index: 1
+        z-index: 1;
         background: #fff;
         top: 0;
         bottom: 0;
