@@ -1,0 +1,11 @@
+{
+	"name": "RadDeck",
+	"version": "0.0.0",
+	"Description": "Realtime Audience Dialogue",
+	"dependencies": {
+		"socket.io": "latest",
+		"express": "latest",
+		"jade": "latest"
+	},
+	"author": "RadDeck Startup Team"
+}
