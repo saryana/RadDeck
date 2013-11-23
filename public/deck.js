@@ -6,24 +6,24 @@ var onResize = function () {
 };
 
 var moveTo = function (index) {
-    slideIndex = index;
-    transition();
+    if (index != currentIndex) {
+        currentIndex = index * 1;
+        if (isNaN(currentIndex)) {
+            currentIndex = 0;
+        }
+        if (socket) {
+            socket.emit('moveTo', currentIndex);
+        }
+        location.hash = '#' + currentIndex;
+        $slides.each(function (index, slide) {
+            $(slide).css('opacity', index == currentIndex ? 1 : 0);
+        });
+    }
 };
 
 var moveBy = function (increment) {
-    slideIndex = (slideIndex + slideCount + increment) % slideCount;
-    transition();
+    moveTo((currentIndex + slideCount + increment) % slideCount);
 };
-
-function transition() {
-    if (isNaN(slideIndex)) {
-        slideIndex = 0;
-    }
-    location.hash = '#' + slideIndex;
-    $slides.each(function (index, slide) {
-        $(slide).css('opacity', index == slideIndex ? 1 : 0);
-    });
-}
 
 $(window).on('resize', onResize);
 
@@ -41,12 +41,35 @@ $('#questions').click(function () {
 
 var $slides = $('.slide');
 var slideCount = $slides.length;
-var slideIndex = location.hash.replace('#', '');
+var currentIndex = 'unknown'; // moveTo will only move if index != currentIndex
+var masterIndex = 0;
+var socket = io.connect(location.protocol + '//' + location.host);
+var isFollowing = true;
 
-transition();
+var hash = location.hash.replace('#', '');
+moveTo(hash);
 onResize();
-
 
 setTimeout(function () {
     $slides.css('transition', 'opacity 0.5s');
 }, 100);
+
+isMaster = false;
+
+socket.on('connect', function () {
+
+    if (hash == 'master') {
+        socket.on('isMaster', function (index) {
+            isMaster = true;
+        });
+        socket.emit('setMaster', true);
+    }
+
+    socket.on('masterMove', function (index) {
+        masterIndex = index;
+        if (isFollowing) {
+            moveTo(index);
+        }
+    });
+
+});

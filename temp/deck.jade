@@ -3,6 +3,7 @@ html
     head
         title RadDeck
         link(rel='stylesheet', href='/deck.css')
+        link(rel='shortcut icon', href='/favicon.ico')
     body
         #menu
             #questions.menu-button ?
@@ -28,11 +29,14 @@ html
                         li Students vote
                         li Professors answer
                 .slide
-                    h2 Steps
+                    h2 Competitors
                     ol
-                        li Cut a hole in a box
-                        li Put your junk in that box
-                        li Make her open the box
+                        li
+                            a(href='http://echo360.com/') Echo360
+                        li
+                            a(href='http://eclicker.com/') eClicker
 
         script(src='/zepto.js')
+        script(src='/socket.io/socket.io.js')
         script(src='/deck.js')
+

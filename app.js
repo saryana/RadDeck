@@ -1,33 +1,38 @@
 var express = require("express");
 var app = express();
+var log = console.log;
 var port = 3700;
-
-var master;
 
 app.set('views', __dirname + '/temp');
 app.set('view engine', "jade");
 app.engine('jade', require('jade').__express);
 
-app.get("/", function(req, res){
-    res.render("test");
-});
-
-app.get("/deck", function(req, res){
-    res.render("deck");
+var pages = ['', 'deck'];
+pages.forEach(function (page) {
+    app.get('/' + page, function(req, res){
+        res.render(page || 'test');
+    });
 });
 
 app.use(express.static(__dirname + '/public'));
 
+var master;
+
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
-    if (!master) master = socket.id;
-    socket.emit('connect', { soc: socket.id, mas: master });
 
-    socket.on('send', function (data) {
-        io.sockets.emit('message', data);
+    socket.on('setMaster', function () {
+        master = socket.id;
+        socket.emit('isMaster', true);
     });
-});
 
+    socket.on('moveTo', function (index) {
+        if (socket.id == master) {
+            io.sockets.emit('masterMove', index);
+        }
+    });
+
+});
 
 console.log("Listening on port " + port);
