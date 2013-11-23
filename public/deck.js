@@ -83,7 +83,9 @@ socket.on('connect', function () {
                 $('#resume').show();
             }
         });
-        socket.emit('setMaster', true);
+        var cook = document.cookie;
+        console.log(cook);
+        socket.emit('setMaster', cook);
     }
 
     socket.on('masterMove', function (index) {

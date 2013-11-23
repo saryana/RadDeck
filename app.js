@@ -54,7 +54,8 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
-    socket.on('setMaster', function () {
+    socket.on('setMaster', function (cookie) {
+        console.log(JSON.stringify(cookie));
     	if (masterSocket && socket.id != masterSocket.id) {
     		masterSocket.emit('isMaster', false);
     	}
