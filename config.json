@@ -1,0 +1,12 @@
+{
+	"student" : {
+		"00": "TestStudent 1",
+		"01": "TestStudent 2"
+	},
+	"admin": {
+		"A": "Sam Eubank",
+		"B": "Sean Aryana",
+		"C": "Janna Jacobson",
+		"D": "Katie Fraser"
+	}
+}

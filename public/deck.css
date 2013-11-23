@@ -132,6 +132,11 @@ body, textarea {
     background: #eee;
 }
 
+.disabled {
+    opacity: .3;
+    cursor: default;
+}
+
 @media (orientation: portrait) {
 
     #menu {

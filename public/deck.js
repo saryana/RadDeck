@@ -29,16 +29,32 @@ var moveBy = function (increment) {
 $(window).on('resize', onResize);
 
 $('#next').click(function () {
+    follow(false);
     moveBy(1);
 });
 
 $('#previous').click(function () {
+    follow(false);
     moveBy(-1);
+});
+
+$('#resume').click(function () {
+    follow(true);
+    moveTo(masterIndex);
 });
 
 $('#questions').click(function () {
     $('#questions-area').toggleClass('on');
 });
+
+function follow(following) {
+    isFollowing = following;
+    if (isFollowing) {
+        $('#resume').addClass('disabled');
+    } else {
+        $('#resume').removeClass('disabled');
+    }
+}
 
 var $slides = $('.slide');
 var slideCount = $slides.length;
@@ -60,8 +76,13 @@ isMaster = false;
 socket.on('connect', function () {
 
     if (hash == 'master') {
-        socket.on('isMaster', function (index) {
-            isMaster = true;
+        socket.on('isMaster', function (setting) {
+            isMaster = setting;
+            if (isMaster) {
+                $('#resume').hide();
+            } else {
+                $('#resume').show();
+            }
         });
         socket.emit('setMaster', true);
     }
@@ -76,6 +97,15 @@ socket.on('connect', function () {
     if (!/studentId/.test(document.cookie)) {
         //prompt('Please enter your student ID.');
     }
+
+    if (!document.cookie) {
+        var id = prompt("Please enter your Student/Admin ID: ");
+        console.log(id);
+        document.cookie = "id=" + id;
+    } else {
+        
+    }
+
 });
 
 setTimeout(function () {
