@@ -1,8 +1,9 @@
 var onResize = function () {
     var w = $(window).height();
     var h = $(window).width();
-    console.log(s = Math.min(w / 12, h / 9));
-    document.body.style.fontSize = s + 'px';
+    var s = Math.min(w / 12, h / 9);
+    $('body').css('fontSize', s + 'px');
+    $('textarea').css('fontSize', (s * 0.8) + 'px');
 };
 
 var moveTo = function (index) {
@@ -38,15 +39,15 @@ $('#previous').click(function () {
 });
 
 $('#resume').click(function () {
-    follow(true)
+    follow(true);
     moveTo(masterIndex);
-})
+});
 
 $('#questions').click(function () {
     $('#questions-area').toggleClass('on');
 });
 
-var follow = function(following) {
+function follow(following) {
     isFollowing = following;
     if (isFollowing) {
         $('#resume').addClass('disabled');
@@ -94,4 +95,26 @@ socket.on('connect', function () {
             moveTo(index);
         }
     });
+<<<<<<< HEAD
+
+    if (!/studentId/.test(document.cookie)) {
+        //prompt('Please enter your student ID.');
+    }
+
+    if (!document.cookie) {
+        var id = prompt("Please enter your Student/Admin ID: ");
+        console.log(id);
+        document.cookie = "id=" + id;
+    } else {
+        
+    }
+
 });
+
+// Uncomment for seeing changes quickly.
+setTimeout(function () {
+    //location.reload();
+}, 2000);
+=======
+});
+>>>>>>> 89e41deb55ca9b33455b402bbeeb48edf720d22b
