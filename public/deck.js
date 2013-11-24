@@ -16,6 +16,7 @@ $('.quiz').each(function (index, quiz) {
     });
 });
 
+// Submits the answer to a question
 $(document).on('click', 'input', function (e) {
     var quiz = this.name;
     var answer = this.value;
@@ -28,6 +29,7 @@ $(document).on('click', 'input', function (e) {
     socket.emit('submitAnswer', answerObj);
 });
 
+// Moves slides accordingly 
 var moveTo = function (index) {
     if (index != currentIndex) {
         var previous = $slides[currentIndex];
@@ -67,6 +69,7 @@ $('#previous').click(function () {
     moveBy(-1);
 });
 
+// Will catch up and start to follow the instructor
 $('#resume').click(function () {
     if (!$(this).hasClass('disabled')) {
         follow(true);
@@ -78,6 +81,7 @@ $('#questions').click(function () {
     $('#questions-area').toggleClass('on');
 });
 
+// Will go at own pace or follow the instructor
 function follow(following) {
     isFollowing = following;
     if (isFollowing) {
@@ -95,6 +99,9 @@ var socket = io.connect(location.protocol + '//' + location.host);
 var isFollowing = true;
 var $quizProgesses = $('.log');
 
+$('.answerlog').hide(); // Not sure where to implement these
+$('#showAnswer').hide();
+
 var hash = location.hash.replace('#', '');
 moveTo(hash);
 onResize();
@@ -111,8 +118,10 @@ socket.on('connect', function () {
             isMaster = setting;
             if (isMaster) {
                 $('#resume').hide();
+                $('#showAnswer').show();
             } else {
                 $('#resume').show();
+                $('#showAnswer').hide();
             }
         });
         socket.emit('setMaster', userId);
@@ -135,12 +144,12 @@ socket.on('connect', function () {
             quiz = clientQuiz.quiz,
             $log = $($quizProgesses[quiz]),
             answers = clientQuiz.answers;
-        console.log(clientQuiz);
-        console.log(progress);
+        if (progress > 80) {
+            $($('.quiz').get(quiz)).find('.answerlog').show();
+        }
         $log.css('width', progress + '%');
         $.each(answers, function (index, answer) {
             var search = '#qa' + quiz + index;
-            console.log(answer);
             $(search).css('width', (answer/totalUsers)*100 + '%');
         });
     });
