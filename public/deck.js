@@ -11,7 +11,8 @@ var userId = document.cookie.split('=')[1].toLowerCase();
 $('.quiz').each(function (index, quiz) {
     $(quiz).find('li').each(function (i, answer) {
         var val = $(answer).text();
-        $(answer).html('<label><input type="radio" name="quiz' + index + '" value="answer' + i + '">' + val + '</label>');
+        var unique = 'qa' +index +i;
+        $(answer).html('<div class="answerlog" id=' + unique + '></div><label><input type="radio" name="quiz' + index + '" value="answer' + i + '">' + val + '</label>');
     });
 });
 
@@ -127,12 +128,21 @@ socket.on('connect', function () {
 
     // Update the progress of the quizzes
     socket.on('answerUpdate', function(clientQuiz) {
-        var progress = clientQuiz.progress;
-        var quiz = clientQuiz.quiz;
-        var $log = $($quizProgesses[quiz]);
+        var quiz = clientQuiz.quiz,
+            userCount = clientQuiz.userCount,
+            totalUsers = clientQuiz.totalUsers,
+            progress = (userCount/totalUsers)*100,
+            quiz = clientQuiz.quiz,
+            $log = $($quizProgesses[quiz]),
+            answers = clientQuiz.answers;
+        console.log(clientQuiz);
         console.log(progress);
         $log.css('width', progress + '%');
-        $log.text(progress);
+        $.each(answers, function (index, answer) {
+            var search = '#qa' + quiz + index;
+            console.log(answer);
+            $(search).css('width', (answer/totalUsers)*100 + '%');
+        });
     });
 
 });
