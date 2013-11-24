@@ -16,17 +16,24 @@ $('.quiz').each(function (index, quiz) {
 
 var moveTo = function (index) {
     if (index != currentIndex) {
+        var previous = $slides[currentIndex];
+        if (previous) {
+            $(previous).css('opacity', 0);
+            previous.t = setTimeout(function () {
+                $(previous).hide();
+            }, 500);
+        }
         currentIndex = index * 1;
         if (isNaN(currentIndex)) {
             currentIndex = 0;
         }
+        location.hash = '#' + currentIndex;
         if (socket) {
             socket.emit('moveTo', currentIndex);
         }
-        location.hash = '#' + currentIndex;
-        $slides.each(function (index, slide) {
-            $(slide).css('opacity', index == currentIndex ? 1 : 0);
-        });
+        var current = $slides[currentIndex];
+        clearTimeout(current.t);
+        $(current).show().css('opacity', 1);
     }
 };
 
@@ -76,10 +83,6 @@ var isFollowing = true;
 var hash = location.hash.replace('#', '');
 moveTo(hash);
 onResize();
-
-setTimeout(function () {
-    $slides.css('transition', 'opacity 0.5s');
-}, 100);
 
 isMaster = false;
 var userId = document.cookie.split('=')[1].toLowerCase();

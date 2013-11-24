@@ -75,6 +75,9 @@ body, textarea {
 .slide {
     position: absolute;
     top: 0;
+    opacity: 0;
+    display: none;
+    transition opacity 0.5s;
 }
 
 .quiz ul {
