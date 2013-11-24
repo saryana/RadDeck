@@ -17,10 +17,11 @@ html
                     #question-tabs.menu-tabs
                         #top-questions.menu-tab.on Top voted
                         #new-questions.menu-tab Newest
-                    #questions-list
+                    div#qtz
                 #ask-section
                     #ask-question
                         #ask-prompt Ask a question
+                            button#submit-question Submit
                         div: textarea#question-text
         #slides
             #slide-area
@@ -68,4 +69,5 @@ html
         script(src='/zepto.js')
         script(src='/socket.io/socket.io.js')
         script(src='/deck.js')
+        script(src='/questions.js')
 

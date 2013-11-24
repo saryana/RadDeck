@@ -154,6 +154,17 @@ socket.on('connect', function () {
         });
     });
 
+    // Receives questions from all users
+    socket.on('questionsUpdate', function(data) {
+        var $q = $('#qtz');
+        $.each(data, function (index, obj) {
+            var $qdiv = $('<div class="question" id="' + obj.chatId + '">');
+            $qdiv.text(obj.question);
+            $q.append($qdiv);
+            console.log($qdiv);
+        });
+    });
+
 });
 
 // Uncomment for seeing changes quickly.

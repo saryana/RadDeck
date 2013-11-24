@@ -9,6 +9,8 @@ var connectedUsers = {
     count: 0
 };
 var quizzes = [];
+var questions = [];
+var chatIdCreator = 10;
 
 // Create dictionary for users and their id's
 users.forEach(function(student) {
@@ -139,6 +141,17 @@ io.sockets.on('connection', function (socket) {
             'answers': quiz.answers
         };
         io.sockets.emit('answerUpdate', clientQuiz);
+    });
+
+    // Posting questions
+    socket.on('postQuestion', function(question) {
+        questions.push({
+            'question': question,
+            'chatId': chatIdCreator,
+            'userId': socket.userId
+        });
+        chatIdCreator += 7;
+        io.sockets.emit('questionsUpdate', questions);
     });
 });
 
