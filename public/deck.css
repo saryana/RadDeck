@@ -60,6 +60,10 @@ body, textarea {
     opacity: 1;
     text-shadow: 0.03em 0.03em #fff;
     cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
 }
 
 #slides {
@@ -77,7 +81,7 @@ body, textarea {
     top: 0;
     opacity: 0;
     display: none;
-    transition opacity 0.5s;
+    transition: opacity 0.5s;
 }
 
 .quiz ul {
