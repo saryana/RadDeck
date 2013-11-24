@@ -203,18 +203,21 @@ socket.on('connect', function () {
         var $chatRes = $('#chat-res');
         var $askQ = $('#ask-question');
         var $chatB = $('#chat-box');
-
-        $chatRes.hide();
-        $chatB.hide();
+        console.log(data);
 
         $q.empty();
         $.each(data, function (index, obj) {
-            var $qdiv = $('<div class="question" id="' + obj.chatId + '">');
-            $qdiv.text(++index + ') ' + obj.question);
+            var $qdiv = $('<span class="upvote" id="ques' + index + '">' + obj.upvotes + '</span><span class="question" id="' + obj.chatId + '">'+obj.question+'</span></br>');
             $q.append($qdiv);
             console.log($qdiv);
         });
 
+        $('.upvote').click(function() {
+            var questionNum = this.id;
+            socket.emit('tallyUpvote', questionNum);
+        });
+
+        // Handles question clicking and moving to chatroom
         $('.question').click(function() {
             $q.hide();
             $askQ.hide();
@@ -234,7 +237,7 @@ socket.on('connect', function () {
             question = question.substring(question.indexOf(' ')+1, question.length);
             $('#chat-title').text(question);
 
-            // $('#chat-title').attr('id', 'chat' + chatId);
+            // Handles sending chat messages to specific chatroom
             $('#submit-chat').unbind('click').bind('click', function() {
                 var chatTextRes = $('#chat-send-box').val();
                 $('#chat-send-box').val('');

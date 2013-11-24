@@ -158,7 +158,9 @@ io.sockets.on('connection', function (socket) {
         questions.push({
             'question': question,
             'chatId': chatIdCreator,
-            'userId': socket.userId
+            'userId': socket.userId,
+            'upvotes': 1,
+            'upvotesUsers': [socket.userId]
         });
         chatRoom[chatIdCreator] = [];
         chatIdCreator += 7;
@@ -188,6 +190,16 @@ io.sockets.on('connection', function (socket) {
         console.log(newData);
 
         io.sockets.emit('chatResponse', newData);
+    });
+
+    // Tally upvotes
+    socket.on('tallyUpvote', function(question) {
+        question = question.replace('ques', '');
+        if (questions[question]['upvotesUsers'].indexOf(socket.userId) == -1) {
+            questions[question]['upvotes']++;
+            questions[question]['upvotesUsers'].push(socket.userId);
+        }
+        socket.emit('questionsUpdate', questions);
     });
 });
 
