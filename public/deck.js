@@ -85,7 +85,6 @@ socket.on('connect', function () {
             }
         });
         var cook = document.cookie;
-        console.log(cook);
         socket.emit('setMaster', cook);
     }
 
@@ -95,19 +94,6 @@ socket.on('connect', function () {
             moveTo(index);
         }
     });
-<<<<<<< HEAD
-
-    if (!/studentId/.test(document.cookie)) {
-        //prompt('Please enter your student ID.');
-    }
-
-    if (!document.cookie) {
-        var id = prompt("Please enter your Student/Admin ID: ");
-        console.log(id);
-        document.cookie = "id=" + id;
-    } else {
-        
-    }
 
 });
 
@@ -115,6 +101,3 @@ socket.on('connect', function () {
 setTimeout(function () {
     //location.reload();
 }, 2000);
-=======
-});
->>>>>>> 89e41deb55ca9b33455b402bbeeb48edf720d22b
