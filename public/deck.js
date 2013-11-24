@@ -108,6 +108,7 @@ socket.on('connect', function () {
 
 });
 
+// Uncomment for seeing changes quickly.
 setTimeout(function () {
-    location.reload();
+    //location.reload();
 }, 2000);
