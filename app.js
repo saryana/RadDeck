@@ -8,7 +8,11 @@ var admins = ['sean', 'sam', 'jana', 'katie', 'pj'];
 var connectedUsers = {
     count: 0
 };
+var chatRoom = {};
+
 var quizzes = [];
+var questions = [];
+var chatIdCreator = 10;
 
 // Create dictionary for users and their id's
 users.forEach(function(student) {
@@ -129,7 +133,6 @@ io.sockets.on('connection', function (socket) {
         } else if (prevAnswerNumber != answerNumber) {
             quiz.answers[answerNumber]++;
         }
-        quiz.progress = 
         quiz.users[userId] =  answerNumber;
         console.log(quizzes);
         var clientQuiz = {
@@ -139,6 +142,18 @@ io.sockets.on('connection', function (socket) {
             'answers': quiz.answers
         };
         io.sockets.emit('answerUpdate', clientQuiz);
+    });
+
+    // Posting questions
+    socket.on('postQuestion', function(question) {
+        questions.push({
+            'question': question,
+            'chatId': chatIdCreator,
+            'userId': socket.userId
+        });
+        chatRoom[chatIdCreator] = [];
+        chatIdCreator += 7;
+        io.sockets.emit('questionsUpdate', questions);
     });
 });
 

@@ -179,6 +179,36 @@ socket.on('connect', function () {
         });
     });
 
+    // Receives questions from all users
+    socket.on('questionsUpdate', function(data) {
+        var $q = $('#question-list');
+        var $chatRes = $('#chat-res');
+        var $askQ = $('#ask-question');
+        var $chatB = $('#chat-box');
+
+        $chatRes.hide();
+        $chatB.hide();
+
+        $.each(data, function (index, obj) {
+            var $qdiv = $('<div class="question" id="' + obj.chatId + '">');
+            $qdiv.text(++index + ') ' + obj.question);
+            $q.append($qdiv);
+            console.log($qdiv);
+        });
+
+        $('.question').click(function() {
+            var chatId = this.id;
+            var question = $(this).text();
+            question = question.substring(question.indexOf(' ')+1, question.length);
+            $q.hide();
+            $askQ.hide();
+            $chatRes.show();
+            $chatB.show();
+
+            $('#chat-title').text(question);
+        });
+    });
+
 });
 
 // Uncomment for seeing changes quickly.
