@@ -4,16 +4,11 @@ var log = console.log;
 var port = 3700;
 var config = require("./config.json");
 var users = config.users;
+var admins = ['sean', 'sam', 'jana', 'katie', 'pj'];
 
 // Create dictionary for users and their id's
 users.forEach(function(student) {
     users[student.id] = student;
-    if (student.id == 'sean' || student.id == 'sam' ||
-        student.id == 'jana' || student.id == 'katie' || student.id == 'pj') {
-        users['admin'] = true;
-    } else {
-        users['admin'] = false;
-    }
 });
 
 app.set('views', __dirname + '/temp');
@@ -55,12 +50,14 @@ var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
     socket.on('setMaster', function (cookie) {
-        console.log(JSON.stringify(cookie));
-    	if (masterSocket && socket.id != masterSocket.id) {
-    		masterSocket.emit('isMaster', false);
-    	}
-        masterSocket = socket;
-        socket.emit('isMaster', true);
+        var userId = cookie.split('=')[1].toLowerCase();
+        if (admins.indexOf(userId) > -1) {
+        	if (masterSocket && socket.id != masterSocket.id) {
+        		masterSocket.emit('isMaster', false);
+        	}
+            masterSocket = socket;
+            socket.emit('isMaster', true);
+        }
     });
 
     socket.on('moveTo', function (index) {
