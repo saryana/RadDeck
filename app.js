@@ -69,7 +69,7 @@ io.sockets.on('connection', function (socket) {
             connections.count++;
             connections[socket.id] = true;
         }
-        console.log('hi');
+        console.log('connected');
         console.log(connectedUsers);
     });
 
@@ -85,6 +85,7 @@ io.sockets.on('connection', function (socket) {
                 connectedUsers.count--;
             }
         }
+        console.log('disconnect');
         console.log(connectedUsers);
     });
 
@@ -124,7 +125,7 @@ io.sockets.on('connection', function (socket) {
         prevAnswerNumber = quiz.users[userId];
         if (typeof prevAnswerNumber != 'undefined' && answerNumber != prevAnswerNumber) {
             quiz.answers[prevAnswerNumber]--;
-        } else {
+        } else if (typeof prevAnswerNumber == 'undefined') {
             quiz.userCount++;
         }
 
@@ -134,6 +135,7 @@ io.sockets.on('connection', function (socket) {
             quiz.answers[answerNumber]++;
         }
         quiz.users[userId] =  answerNumber;
+        console.log('quiz');
         console.log(quizzes);
         var clientQuiz = {
             'quiz': quizNumber,
@@ -141,6 +143,8 @@ io.sockets.on('connection', function (socket) {
             'userCount': quiz.userCount,
             'answers': quiz.answers
         };
+        console.log('console quiz');
+        console.log(clientQuiz);
         io.sockets.emit('answerUpdate', clientQuiz);
     });
 

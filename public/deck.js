@@ -137,15 +137,18 @@ socket.on('connect', function () {
 
     // Update the progress of the quizzes
     socket.on('answerUpdate', function(clientQuiz) {
+        console.log(clientQuiz);
         var quiz = clientQuiz.quiz,
             userCount = clientQuiz.userCount,
             totalUsers = clientQuiz.totalUsers,
             progress = (userCount/totalUsers)*100,
-            quiz = clientQuiz.quiz,
+            quizNum = clientQuiz.quiz,
             $log = $($quizProgesses[quiz]),
             answers = clientQuiz.answers;
+        console.log('uc' + userCount);
+        console.log('tu' + totalUsers);
         if (progress > 80) {
-            $($('.quiz').get(quiz)).find('.answerlog').show();
+            $($('.quiz').get(quizNum)).find('.answerlog').show();
         }
         $log.css('width', progress + '%');
         $.each(answers, function (index, answer) {
@@ -172,13 +175,15 @@ socket.on('connect', function () {
         });
 
         $('.question').click(function() {
-            var chatId = this.id;
-            var question = $(this).text();
-            question = question.substring(question.indexOf(' ')+1, question.length);
             $q.hide();
             $askQ.hide();
             $chatRes.show();
             $chatB.show();
+
+            var chatId = this.id;
+            var question = $(this).text();
+            question = question.substring(question.indexOf(' ')+1, question.length);
+
 
             $('#chat-title').text(question);
         });
