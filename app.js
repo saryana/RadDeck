@@ -64,7 +64,6 @@ io.sockets.on('connection', function (socket) {
             connections[socket.id] = true;
         }
         console.log('hi');
-        //connectedUsers[userId] = connections;
         console.log(connectedUsers);
     });
 

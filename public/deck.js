@@ -6,6 +6,14 @@ var onResize = function () {
     $('textarea').css('fontSize', (s * 0.8) + 'px');
 };
 
+// Replaces quiz slides with input fields
+$('.quiz').each(function (index, quiz) {
+    $(quiz).find('li').each(function (i, answer) {
+        var val = $(answer).text();
+        $(answer).html('<label><input type="radio" name="quiz' + index + '" value="answer' + i + '">' + val + '</label>');
+    });
+});
+
 var moveTo = function (index) {
     if (index != currentIndex) {
         currentIndex = index * 1;

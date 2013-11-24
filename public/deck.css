@@ -77,6 +77,10 @@ body, textarea {
     top: 0;
 }
 
+.quiz ul {
+    list-style-type: none;
+}
+
 #slide-area {
     position: relative;
     margin-left: 1em;
