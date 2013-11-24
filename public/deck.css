@@ -84,6 +84,15 @@ body, textarea {
     list-style-type: none;
 }
 
+.log {
+    width: 0%;
+    margin-left: 20%;
+    background-color: gray;
+    height: 1em;
+    padding: 0;
+    margin: 0;
+}
+
 #slide-area {
     position: relative;
     margin-left: 1em;

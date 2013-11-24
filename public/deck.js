@@ -5,6 +5,7 @@ var onResize = function () {
     $('body').css('fontSize', s + 'px');
     $('textarea').css('fontSize', (s * 0.8) + 'px');
 };
+var userId = document.cookie.split('=')[1].toLowerCase();
 
 // Replaces quiz slides with input fields
 $('.quiz').each(function (index, quiz) {
@@ -12,6 +13,18 @@ $('.quiz').each(function (index, quiz) {
         var val = $(answer).text();
         $(answer).html('<label><input type="radio" name="quiz' + index + '" value="answer' + i + '">' + val + '</label>');
     });
+});
+
+$(document).on('click', 'input', function (e) {
+    var quiz = this.name;
+    var answer = this.value;
+    var answerObj = {
+        'userId': userId,
+        'quiz': quiz,
+        'answer': answer
+    }
+
+    socket.emit('submitAnswer', answerObj);
 });
 
 var moveTo = function (index) {
@@ -79,13 +92,13 @@ var currentIndex = 'unknown'; // moveTo will only move if index != currentIndex
 var masterIndex = 0;
 var socket = io.connect(location.protocol + '//' + location.host);
 var isFollowing = true;
+var $quizProgesses = $('.log');
 
 var hash = location.hash.replace('#', '');
 moveTo(hash);
 onResize();
 
 isMaster = false;
-var userId = document.cookie.split('=')[1].toLowerCase();
 socket.on('connect', function () {
 
     // Connects a user
@@ -110,6 +123,16 @@ socket.on('connect', function () {
         if (isFollowing) {
             moveTo(index);
         }
+    });
+
+    // Update the progress of the quizzes
+    socket.on('answerUpdate', function(clientQuiz) {
+        var progress = clientQuiz.progress;
+        var quiz = clientQuiz.quiz;
+        var $log = $($quizProgesses[quiz]);
+        console.log(progress);
+        $log.css('width', progress + '%');
+        $log.text(progress);
     });
 
 });

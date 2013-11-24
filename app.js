@@ -8,6 +8,7 @@ var admins = ['sean', 'sam', 'jana', 'katie', 'pj'];
 var connectedUsers = {
     count: 0
 };
+var quizzes = [];
 
 // Create dictionary for users and their id's
 users.forEach(function(student) {
@@ -52,6 +53,7 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
+    // Adds user and all the devices it is connecting from
     socket.on('setUser', function (userId) {
         socket.userId = userId;
         var connections = connectedUsers[userId];
@@ -67,6 +69,7 @@ io.sockets.on('connection', function (socket) {
         console.log(connectedUsers);
     });
 
+    // Deletes sockets or  users if no sockets exist
     socket.on('disconnect', function() {
         var userId = socket.userId;
         var connections = connectedUsers[userId];
@@ -81,8 +84,8 @@ io.sockets.on('connection', function (socket) {
         console.log(connectedUsers);
     });
 
+    // Sets or changes the master if they are an admin
     socket.on('setMaster', function (userId) {
-        
         if (admins.indexOf(userId) > -1) {
         	if (masterSocket && socket.id != masterSocket.id) {
         		masterSocket.emit('isMaster', false);
@@ -92,12 +95,52 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
+    // Moves the slides of students if master moves his
     socket.on('moveTo', function (index) {
         if (masterSocket && socket.id == masterSocket.id) {
             io.sockets.emit('masterMove', index);
         }
     });
 
+    // Moniters the answers of all the students as well as the answers
+    socket.on('submitAnswer', function (answerObj) {
+        var userId = answerObj.userId;
+        var quizNumber = parseInt(answerObj.quiz.replace('quiz', ''));
+        var answerNumber = parseInt(answerObj.answer.replace('answer', ''));
+        var prevAnswerNumber;
+        var quiz = quizzes[quizNumber];
+        if (!quiz) {
+            quiz = quizzes[quizNumber] = {
+                'answers': [],
+                'progress': 0,
+                'users': {
+                    'count': 0
+                }
+            };
+        }
+        
+        prevAnswerNumber = quiz.users[userId];
+        if (typeof prevAnswerNumber != 'undefined' && answerNumber != prevAnswerNumber) {
+            quiz.answers[prevAnswerNumber]--;
+        } else {
+            quiz.users.count++;
+        }
+
+        if (typeof quiz.answers[answerNumber] == 'undefined') {
+            quiz.answers[answerNumber] = 1;
+        } else if (prevAnswerNumber != answerNumber) {
+            quiz.answers[answerNumber]++;
+        }
+        quiz.progress = Math.min(quiz.users.count/connectedUsers.count*100, 100)
+        quiz.users[userId] =  answerNumber;
+        console.log(quizzes);
+        var clientQuiz = {
+            'quiz': quizNumber,
+            'progress': quiz.progress,
+            'answers': quiz.answers
+        };
+        io.sockets.emit('answerUpdate', clientQuiz);
+    });
 });
 
 console.log("Listening on port " + port);
