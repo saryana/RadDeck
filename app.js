@@ -57,6 +57,9 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port), { log: false });
 
 io.sockets.on('connection', function (socket) {
+    // Emit existing results
+    forEach(var chat :)
+
     // Adds user and all the devices it is connecting from
     socket.on('setUser', function (userId) {
         socket.userId = userId;
@@ -158,6 +161,23 @@ io.sockets.on('connection', function (socket) {
         chatRoom[chatIdCreator] = [];
         chatIdCreator += 7;
         io.sockets.emit('questionsUpdate', questions);
+    });
+
+    // Sends back responses according to chat room
+    socket.on('getChatResponse', function(room) {
+        socket.emit('chatResponse', chatRoom[room]);
+    });
+
+    // Recieves student response to a questions
+    socket.on('sendChat', function(data) {
+        if (chatRoom[data.chatId]) {
+            chatRoom[data.chatId].push(data.response);    
+        } else {
+            var chatResponses = chatRoom[data.chatId] = new Array();
+            chatResponses.push(data.response);
+        }
+        console.log(chatRoom);
+        io.sockets.emit('chatResponse', chatRoom[data.chatId]); 
     });
 });
 

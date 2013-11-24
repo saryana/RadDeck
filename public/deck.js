@@ -29,7 +29,7 @@ $('.quiz').each(function (index, quiz) {
 });
 
 // Submits the answer to a question
-$(document).on('click', 'input', function (e) {
+$(document).on('click', 'input[type="radio"]', function (e) {
     var quiz = this.name;
     var answer = this.value;
     var answerObj = {
@@ -89,6 +89,16 @@ $('#resume').click(function () {
         moveTo(masterIndex);    
     }
 });
+
+// Changes to question view
+$('#top-questions').click(questionView);
+$('#new-questions').click(questionView);
+function questionView() {
+    $('#chat-res').hide();
+    $('#ask-question').show();
+    $('#question-list').show();
+    $('#chat-box').hide()
+}
 
 $('#questions').click(function () {
     var $area = $('#questions-area');
@@ -206,13 +216,38 @@ socket.on('connect', function () {
             $chatB.show();
 
             var chatId = this.id;
+
+            socket.emit('getChatResponse', chatId);
+
+            var $chatArea = $('chat-area');
+
             var question = $(this).text();
             question = question.substring(question.indexOf(' ')+1, question.length);
 
-
             $('#chat-title').text(question);
+            $('#chat-title').attr('id', 'chat' + chatId);
+            $('#submit-chat').click(function() {
+                var chatTextRes = $('#chat-send-box').val();
+                $('#chat-send-box').val('');
+                var data = {};
+                data['chatId'] = chatId;
+                data['response'] = chatTextRes;
+                socket.emit('sendChat', data);
+            });
         });
     });
+
+    // Receives the responses for a chat room
+    socket.on('chatResponse', function(chatResponse) {
+        console.log(chatResponse);
+        $('#chat-area').empty();
+
+        $.each(chatResponse, function(index, responses) {
+            var $res = $('<div>');
+            $res.text(responses);
+            $('#chat-area').append($res);
+        });
+    })
 
 });
 
