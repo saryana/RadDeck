@@ -90,15 +90,6 @@ $('#resume').click(function () {
     }
 });
 
-// Changes to question view
-$('#top-questions').click(questionView);
-$('#new-questions').click(questionView);
-function questionView() {
-    $('#chat-res').hide();
-    $('#ask-question').show();
-    $('#question-list').show();
-    $('#chat-box').hide()
-}
 
 $('#questions').click(function () {
     var $area = $('#questions-area');
@@ -133,6 +124,20 @@ var masterIndex = 0;
 var socket = io.connect(location.protocol + '//' + location.host);
 var isFollowing = true;
 var $quizProgesses = $('.log');
+var currentChatThread = 0;
+
+
+
+// Changes to question view
+$('#top-questions').click(questionView);
+$('#new-questions').click(questionView);
+function questionView() {
+    $('#chat-res').hide();
+    $('#ask-question').show();
+    $('#question-list').show();
+    $('#chat-box').hide()
+    currentChatThread = 0;
+}
 
 $('.answerlog').hide(); // Not sure where to implement these
 $('#showAnswer').hide();
@@ -202,6 +207,7 @@ socket.on('connect', function () {
         $chatRes.hide();
         $chatB.hide();
 
+        $q.empty();
         $.each(data, function (index, obj) {
             var $qdiv = $('<div class="question" id="' + obj.chatId + '">');
             $qdiv.text(++index + ') ' + obj.question);
@@ -216,21 +222,25 @@ socket.on('connect', function () {
             $chatB.show();
 
             var chatId = this.id;
+            currentChatThread = chatId;
 
+            console.log('Getting responses from ' + chatId);
             socket.emit('getChatResponse', chatId);
+            console.log('Now viweing content form ' + currentChatThread);
 
             var $chatArea = $('chat-area');
 
             var question = $(this).text();
             question = question.substring(question.indexOf(' ')+1, question.length);
-
             $('#chat-title').text(question);
-            $('#chat-title').attr('id', 'chat' + chatId);
-            $('#submit-chat').click(function() {
+
+            // $('#chat-title').attr('id', 'chat' + chatId);
+            $('#submit-chat').unbind('click').bind('click', function() {
                 var chatTextRes = $('#chat-send-box').val();
                 $('#chat-send-box').val('');
                 var data = {};
-                data['chatId'] = chatId;
+                console.log('sending: ' + currentChatThread);
+                data['chatId'] = currentChatThread;
                 data['response'] = chatTextRes;
                 socket.emit('sendChat', data);
             });
@@ -239,14 +249,16 @@ socket.on('connect', function () {
 
     // Receives the responses for a chat room
     socket.on('chatResponse', function(chatResponse) {
-        console.log(chatResponse);
-        $('#chat-area').empty();
+        console.log('Here is the data from for room ' + chatResponse.chatId);
+        if (chatResponse.chatId == currentChatThread) {
+            $('#chat-area').empty();
 
-        $.each(chatResponse, function(index, responses) {
-            var $res = $('<div>');
-            $res.text(responses);
-            $('#chat-area').append($res);
-        });
+            $.each(chatResponse.response, function(index, responses) {
+                var $res = $('<div>');
+                $res.text(responses);
+                $('#chat-area').append($res);
+            });
+        }
     })
 
 });

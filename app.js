@@ -57,8 +57,10 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port), { log: false });
 
 io.sockets.on('connection', function (socket) {
-    // Emit existing results
-    forEach(var chat :)
+    /* Emit existing results
+    for (var i = 0; i < questions.length; i++) {
+        io.sockets.emit('questionsUpdate', questions[i]);
+    }*/
 
     // Adds user and all the devices it is connecting from
     socket.on('setUser', function (userId) {
@@ -72,8 +74,8 @@ io.sockets.on('connection', function (socket) {
             connections.count++;
             connections[socket.id] = true;
         }
-        console.log('connected');
-        console.log(connectedUsers);
+        //console.log('connected');
+        //console.log(connectedUsers);
     });
 
     // Deletes sockets or  users if no sockets exist
@@ -88,8 +90,8 @@ io.sockets.on('connection', function (socket) {
                 connectedUsers.count--;
             }
         }
-        console.log('disconnect');
-        console.log(connectedUsers);
+        //console.log('disconnect');
+        //console.log(connectedUsers);
     });
 
     // Sets or changes the master if they are an admin
@@ -138,16 +140,16 @@ io.sockets.on('connection', function (socket) {
             quiz.answers[answerNumber]++;
         }
         quiz.users[userId] =  answerNumber;
-        console.log('quiz');
-        console.log(quizzes);
+        //console.log('quiz');
+        //console.log(quizzes);
         var clientQuiz = {
             'quiz': quizNumber,
             'totalUsers': connectedUsers.count,
             'userCount': quiz.userCount,
             'answers': quiz.answers
         };
-        console.log('console quiz');
-        console.log(clientQuiz);
+        //console.log('console quiz');
+        //console.log(clientQuiz);
         io.sockets.emit('answerUpdate', clientQuiz);
     });
 
@@ -165,7 +167,11 @@ io.sockets.on('connection', function (socket) {
 
     // Sends back responses according to chat room
     socket.on('getChatResponse', function(room) {
-        socket.emit('chatResponse', chatRoom[room]);
+        var newData = {};
+        newData.chatId = room;
+        newData.response = chatRoom[room];
+        console.log(newData);
+        socket.emit('chatResponse', newData);
     });
 
     // Recieves student response to a questions
@@ -176,8 +182,12 @@ io.sockets.on('connection', function (socket) {
             var chatResponses = chatRoom[data.chatId] = new Array();
             chatResponses.push(data.response);
         }
-        console.log(chatRoom);
-        io.sockets.emit('chatResponse', chatRoom[data.chatId]); 
+        var newData = {};
+        newData.chatId = data.chatId;
+        newData.response = chatRoom[data.chatId];
+        console.log(newData);
+
+        io.sockets.emit('chatResponse', newData);
     });
 });
 
