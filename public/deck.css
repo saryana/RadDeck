@@ -152,6 +152,35 @@ ol, ul {
     bottom: 4em;
 }
 
+#question-tabs {
+    height: 16%;
+}
+
+.question {
+    cursor: pointer;
+}
+.question:hover {
+    background-color: lightgray;
+    text-decoration: underline;
+}
+#chat-res {
+    display: none;
+}
+#chat-box {
+    display: none;
+    height: 100%;
+    font-size: .5em;
+}
+#chat-area {
+    height: 80%;
+    width: 100%;
+    background-color: white;
+}
+#chat-title {
+    margin: 0;
+    font-size: 1em;
+}
+
 #ask-section {
     position: absolute;
     right: 0.5em;

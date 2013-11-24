@@ -16,12 +16,17 @@ html
                     #question-tabs.menu-tabs
                         #top-questions.menu-tab.on Top voted
                         #new-questions.menu-tab Newest
-                    div#qtz
+                    div#question-list
+                    div#chat-box
+                        h3#chat-title
+                        div#chat-area
                 #ask-section
                     #ask-question
                         #ask-prompt Ask a question
                             button#submit-question Submit
                         div: textarea#question-text
+                    #chat-res
+                        input(type='text' name='chat-response')
         #slides
             #slide-area
                 .slide
