@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    padding: 0;
+    font: normal 12px Arial;
+    background: #eee;
+    height: 100%;
+}
+
+#stripe {
+    background: #D6A810;
+    border-bottom: 1px solid #39275A;
+}
+
+#stripe {
+    text-align: right;
+}
+
+#stripe a {
+    color: #fff;
+    margin: 0 8px;
+}
+
+#stripe b {
+    color: #fff;
+}
+
+#head {
+    margin: 0;
+    padding: 0;
+    background: #eee; /* Old browsers */
+    background: -moz-linear-gradient(top, #eee 0%, #fff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, bottom left, bottom right, color-stop(0%,#eee), color-stop(100%,#fff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(bottom, #eee 0%,#fff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(bottom, #eee 0%,#fff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(bottom, #eee 0%,#fff 100%); /* IE10+ */
+    background: linear-gradient(to top, #eee 0%,#fff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+#logo {
+    font-weight: bold;
+    font-size: 4em;
+    color: #39275A;
+    margin: 0;
+}
+
+#logo img {
+    vertical-align: middle;
+}
+
+#logo span {
+    color: #D6A810;
+}
+
+#problem {
+    color: #333;
+    text-align: center;
+    font-size: 2.6em;
+    font-weight: normal;
+}
+
+#feature {
+    background: #39275A;
+    height: 240px;
+}
+
+
+#feature iframe, #play {
+    position: absolute;
+    top: 20px;
+    left: 8px;
+    width: 340px;
+    height: 200px;
+    border: 1px solid #000;
+}
+
+#feature img {
+    position: absolute;
+    right: 0;
+    top: 90px;
+    width: 581px;
+    height: 289px;
+}
+
+#play {
+    background: url(/play.png) no-repeat 120px 60px;
+}
+
+#tagline {
+    position: absolute;
+    right: 8px;
+    top: -20px;
+    font-size: 4em;
+    color: #fff;
+}
+
+#tagline span {
+    color: #D6A810;
+    margin: 0 0.5em;
+}
+
+#body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border-width: 1px 0;
+    height: 160px;
+}
+
+#foot {
+    margin: 0;
+    padding: 0;
+}
+
+.panel {
+    position: relative;
+    margin: 0 auto;
+    padding: 8px;
+    width: 980px;
+}
+
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
