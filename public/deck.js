@@ -1,10 +1,22 @@
 var onResize = function () {
     var w = $(window).height();
     var h = $(window).width();
-    var s = Math.min(w / 12, h / 9);
+    var s = Math.min(w / 15, h / 9);
     $('body').css('fontSize', s + 'px');
     $('textarea').css('fontSize', (s * 0.8) + 'px');
 };
+
+$('img.bg').each(function () {
+    var bg = this;
+    var parent = bg.parentNode;
+    parent.bg = bg;
+    $bg = $(bg);
+    $bg.insertBefore(parent);
+});
+
+//$('h2').wrap('<div style="background:url(/double-shade.png);width:100%;"/>');
+//$('ol,dl').wrap('<div style="background:url(/shade.png);width:100%;"/>');
+
 var userId = document.cookie.split('=')[1].toLowerCase();
 
 // Replaces quiz slides with input fields
@@ -34,9 +46,10 @@ var moveTo = function (index) {
     if (index != currentIndex) {
         var previous = $slides[currentIndex];
         if (previous) {
-            $(previous).css('opacity', 0);
+            var $previous = $(previous).add(previous.bg);
+            $previous.css('opacity', 0);
             previous.t = setTimeout(function () {
-                $(previous).hide();
+                $previous.hide();
             }, 500);
         }
         currentIndex = index * 1;
@@ -49,7 +62,7 @@ var moveTo = function (index) {
         }
         var current = $slides[currentIndex];
         clearTimeout(current.t);
-        $(current).show().css('opacity', 1);
+        $(current).add(current.bg).show().css('opacity', 1);
     }
 };
 
@@ -78,7 +91,19 @@ $('#resume').click(function () {
 });
 
 $('#questions').click(function () {
-    $('#questions-area').toggleClass('on');
+    var $area = $('#questions-area');
+    var area = $area[0];
+    if ($area.hasClass('on')) {
+        area.t = setTimeout(function () {
+            $area.hide();
+        }, 500);
+    } else {
+        clearTimeout(area.t);
+        $area.show();
+    }
+    setTimeout(function () {
+        $area.toggleClass('on');
+    }, 5);
 });
 
 // Will go at own pace or follow the instructor
