@@ -39,8 +39,10 @@ $('#previous').click(function () {
 });
 
 $('#resume').click(function () {
-    follow(true);
-    moveTo(masterIndex);
+    if (!$(this).hasClass('disabled')) {
+        follow(true);
+        moveTo(masterIndex);    
+    }
 });
 
 $('#questions').click(function () {
@@ -72,9 +74,13 @@ setTimeout(function () {
 }, 100);
 
 isMaster = false;
-
+var userId = document.cookie.split('=')[1].toLowerCase();
 socket.on('connect', function () {
 
+    // Connects a user
+    socket.emit('setUser', userId);
+
+    // Makes a master 
     if (hash == 'master') {
         socket.on('isMaster', function (setting) {
             isMaster = setting;
@@ -84,10 +90,10 @@ socket.on('connect', function () {
                 $('#resume').show();
             }
         });
-        var cook = document.cookie;
-        socket.emit('setMaster', cook);
+        socket.emit('setMaster', userId);
     }
 
+    // Detects when the master is making a move and moves the index
     socket.on('masterMove', function (index) {
         masterIndex = index;
         if (isFollowing) {

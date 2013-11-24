@@ -5,6 +5,9 @@ var port = 3700;
 var config = require("./config.json");
 var users = config.users;
 var admins = ['sean', 'sam', 'jana', 'katie', 'pj'];
+var connectedUsers = {
+    count: 0
+};
 
 // Create dictionary for users and their id's
 users.forEach(function(student) {
@@ -27,7 +30,7 @@ app.post('/deck', function(req, res) {
     var studentId = req.body.studentId.toLowerCase();
     if (users[studentId]) {
         res.cookie('studentId', studentId);
-        res.render('deck');
+        res.redirect('/deck');
     } else {
         res.render('login');
     }
@@ -49,8 +52,38 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
-    socket.on('setMaster', function (cookie) {
-        var userId = cookie.split('=')[1].toLowerCase();
+    socket.on('setUser', function (userId) {
+        socket.userId = userId;
+        var connections = connectedUsers[userId];
+        if (!connections) {
+            connections = connectedUsers[userId] = { count: 0 };
+            connectedUsers.count++;
+        }
+        if (!connections[socket.id]) {
+            connections.count++;
+            connections[socket.id] = true;
+        }
+        console.log('hi');
+        //connectedUsers[userId] = connections;
+        console.log(connectedUsers);
+    });
+
+    socket.on('disconnect', function() {
+        var userId = socket.userId;
+        var connections = connectedUsers[userId];
+        if (connections && connections[socket.id]) {
+            delete connections[socket.id];
+            connections.count--;
+            if (!connections.count) {
+                delete connectedUsers[userId];
+                connectedUsers.count--;
+            }
+        }
+        console.log(connectedUsers);
+    });
+
+    socket.on('setMaster', function (userId) {
+        
         if (admins.indexOf(userId) > -1) {
         	if (masterSocket && socket.id != masterSocket.id) {
         		masterSocket.emit('isMaster', false);
