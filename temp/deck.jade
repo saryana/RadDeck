@@ -1,15 +1,15 @@
 !!! 5
 html
     head
-        title RadDeck
+        title Askadoo
         link(rel='stylesheet', href='/deck.css')
         link(rel='shortcut icon', href='/favicon.ico')
     body
         #menu
-            #questions.menu-button ?
-            #previous.menu-button ⇦
-            #next.menu-button ⇨
-            #resume.menu-button.disabled R
+            #questions.menu-button: img(src="/question.png")
+            #previous.menu-button: img(src="/next.png")
+            #next.menu-button: img(src="/previous.png")
+            #resume.menu-button.disabled: img(src="/follow.png")
         #questions-area.menu-area
             .menu-pad
                 #questions-section
@@ -24,7 +24,7 @@ html
         #slides
             #slide-area
                 .slide
-                    h2 What is RadDeck?
+                    h2 What is Askadoo?
                     ul
                         li Real-time
                         li Audience

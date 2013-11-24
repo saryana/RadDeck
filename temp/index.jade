@@ -1,13 +1,13 @@
 doctype
 html
     head
-        title Askedu - Ask. Interact. Learn.
+        title Askadoo - Ask. Interact. Learn.
         link(rel="stylesheet", href="/site.css")
         meta(name="viewport", content="width=device-width,initial-scale=1")
     body
         #stripe
             .panel
-                a(href="/") Login
+                a(href="/") Sign in
                 b |
                 a(href="/") Get Support
                 b |
@@ -18,7 +18,7 @@ html
             .panel
                 h1#logo(href="/")
                     img(src="/logo.png")
-                    <span>Ask</span>edu<span>.co</span>
+                    <span>Ask</span>adoo
                 h2#problem “Students just aren’t engaged. Half of the time, they’re texting.”
         #feature
             .panel
@@ -31,7 +31,25 @@ html
                 block content
         #foot
             .panel
-                br
+                .quarter
+                    h3 How it Works
+                    p Our simple solutions get results in both engagement and outcomes. Find out how, in 90 seconds.
+                    a(href="/") Learn more
+                .tri &nbsp;
+                .quarter
+                    h3 Before Class
+                    p Instructors share presentations in advance, so students are ready to participate in active learning.
+                    a(href="/") Learn More
+                .tri &nbsp;
+                .quarter
+                    h3 During Class
+                    p Students follow along with presentations, asking questions digitally and answering others' questions.
+                    a(href="/") Learn More
+                .tri &nbsp;
+                .quarter.end
+                    h3 After Class
+                    p Students have study tools at their fingertips anywhere, anytime. Instructors track outcomes to continuously improve.
+                    a(href="/") Learn More
                 br
 
         script(src="/site.js")

@@ -110,6 +110,21 @@ body {
 #foot {
     margin: 0;
     padding: 0;
+    height: 200px;
+}
+
+h3 {
+    color: #D6A810;
+}
+
+.quarter {
+    float: left;
+    width: 22%;
+}
+
+.tri {
+    float: left;
+    width: 4%;
 }
 
 .panel {
