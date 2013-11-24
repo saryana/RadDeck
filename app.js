@@ -50,7 +50,7 @@ app.use(express.static(__dirname + '/public'));
 
 var masterSocket;
 
-var io = require('socket.io').listen(app.listen(port));
+var io = require('socket.io').listen(app.listen(port), { log: false });
 
 io.sockets.on('connection', function (socket) {
     // Adds user and all the devices it is connecting from
@@ -112,10 +112,8 @@ io.sockets.on('connection', function (socket) {
         if (!quiz) {
             quiz = quizzes[quizNumber] = {
                 'answers': [],
-                'progress': 0,
-                'users': {
-                    'count': 0
-                }
+                'userCount': 0,
+                'users': {}
             };
         }
         
@@ -123,7 +121,7 @@ io.sockets.on('connection', function (socket) {
         if (typeof prevAnswerNumber != 'undefined' && answerNumber != prevAnswerNumber) {
             quiz.answers[prevAnswerNumber]--;
         } else {
-            quiz.users.count++;
+            quiz.userCount++;
         }
 
         if (typeof quiz.answers[answerNumber] == 'undefined') {
@@ -131,12 +129,13 @@ io.sockets.on('connection', function (socket) {
         } else if (prevAnswerNumber != answerNumber) {
             quiz.answers[answerNumber]++;
         }
-        quiz.progress = Math.min(quiz.users.count/connectedUsers.count*100, 100)
+        quiz.progress = 
         quiz.users[userId] =  answerNumber;
         console.log(quizzes);
         var clientQuiz = {
             'quiz': quizNumber,
-            'progress': quiz.progress,
+            'totalUsers': connectedUsers.count,
+            'userCount': quiz.userCount,
             'answers': quiz.answers
         };
         io.sockets.emit('answerUpdate', clientQuiz);

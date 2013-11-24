@@ -11,10 +11,12 @@ var userId = document.cookie.split('=')[1].toLowerCase();
 $('.quiz').each(function (index, quiz) {
     $(quiz).find('li').each(function (i, answer) {
         var val = $(answer).text();
-        $(answer).html('<label><input type="radio" name="quiz' + index + '" value="answer' + i + '">' + val + '</label>');
+        var unique = 'qa' +index +i;
+        $(answer).html('<div class="answerlog" id=' + unique + '></div><label><input type="radio" name="quiz' + index + '" value="answer' + i + '">' + val + '</label>');
     });
 });
 
+// Submits the answer to a question
 $(document).on('click', 'input', function (e) {
     var quiz = this.name;
     var answer = this.value;
@@ -27,6 +29,7 @@ $(document).on('click', 'input', function (e) {
     socket.emit('submitAnswer', answerObj);
 });
 
+// Moves slides accordingly 
 var moveTo = function (index) {
     if (index != currentIndex) {
         var previous = $slides[currentIndex];
@@ -66,6 +69,7 @@ $('#previous').click(function () {
     moveBy(-1);
 });
 
+// Will catch up and start to follow the instructor
 $('#resume').click(function () {
     if (!$(this).hasClass('disabled')) {
         follow(true);
@@ -77,6 +81,7 @@ $('#questions').click(function () {
     $('#questions-area').toggleClass('on');
 });
 
+// Will go at own pace or follow the instructor
 function follow(following) {
     isFollowing = following;
     if (isFollowing) {
@@ -94,6 +99,9 @@ var socket = io.connect(location.protocol + '//' + location.host);
 var isFollowing = true;
 var $quizProgesses = $('.log');
 
+$('.answerlog').hide(); // Not sure where to implement these
+$('#showAnswer').hide();
+
 var hash = location.hash.replace('#', '');
 moveTo(hash);
 onResize();
@@ -110,8 +118,10 @@ socket.on('connect', function () {
             isMaster = setting;
             if (isMaster) {
                 $('#resume').hide();
+                $('#showAnswer').show();
             } else {
                 $('#resume').show();
+                $('#showAnswer').hide();
             }
         });
         socket.emit('setMaster', userId);
@@ -127,12 +137,21 @@ socket.on('connect', function () {
 
     // Update the progress of the quizzes
     socket.on('answerUpdate', function(clientQuiz) {
-        var progress = clientQuiz.progress;
-        var quiz = clientQuiz.quiz;
-        var $log = $($quizProgesses[quiz]);
-        console.log(progress);
+        var quiz = clientQuiz.quiz,
+            userCount = clientQuiz.userCount,
+            totalUsers = clientQuiz.totalUsers,
+            progress = (userCount/totalUsers)*100,
+            quiz = clientQuiz.quiz,
+            $log = $($quizProgesses[quiz]),
+            answers = clientQuiz.answers;
+        if (progress > 80) {
+            $($('.quiz').get(quiz)).find('.answerlog').show();
+        }
         $log.css('width', progress + '%');
-        $log.text(progress);
+        $.each(answers, function (index, answer) {
+            var search = '#qa' + quiz + index;
+            $(search).css('width', (answer/totalUsers)*100 + '%');
+        });
     });
 
 });
