@@ -1,0 +1,37 @@
+doctype
+html
+    head
+        title Askedu - Ask. Interact. Learn.
+        link(rel="stylesheet", href="/site.css")
+        meta(name="viewport", content="width=device-width,initial-scale=1")
+    body
+        #stripe
+            .panel
+                a(href="/") Login
+                b |
+                a(href="/") Get Support
+                b |
+                a(href="/") Blog
+                b |
+                a(href="/") Contact
+        #head
+            .panel
+                h1#logo(href="/")
+                    img(src="/logo.png")
+                    <span>Ask</span>edu<span>.co</span>
+                h2#problem “Students just aren’t engaged. Half of the time, they’re texting.”
+        #feature
+            .panel
+                iframe(src="/deck")
+                a#play(href="/deck")
+                h2#tagline Ask. <span>Interact.</span> Learn.
+                img(src="/devices.png")
+        #body
+            panel
+                block content
+        #foot
+            .panel
+                br
+                br
+
+        script(src="/site.js")
