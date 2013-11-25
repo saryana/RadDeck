@@ -62,6 +62,11 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port), { log: false });
 
 io.sockets.on('connection', function (socket) {
+    /* Emit existing results
+    for (var i = 0; i < questions.length; i++) {
+        io.sockets.emit('questionsUpdate', questions[i]);
+    }*/
+
     // Adds user and all the devices it is connecting from
     socket.on('setUser', function (userId) {
         socket.userId = userId;
@@ -74,8 +79,8 @@ io.sockets.on('connection', function (socket) {
             connections.count++;
             connections[socket.id] = true;
         }
-        console.log('hi');
-        console.log(connectedUsers);
+        //console.log('connected');
+        //console.log(connectedUsers);
     });
 
     // Deletes sockets or  users if no sockets exist
@@ -90,7 +95,8 @@ io.sockets.on('connection', function (socket) {
                 connectedUsers.count--;
             }
         }
-        console.log(connectedUsers);
+        //console.log('disconnect');
+        //console.log(connectedUsers);
     });
 
     // Sets or changes the master if they are an admin
@@ -129,7 +135,7 @@ io.sockets.on('connection', function (socket) {
         prevAnswerNumber = quiz.users[userId];
         if (typeof prevAnswerNumber != 'undefined' && answerNumber != prevAnswerNumber) {
             quiz.answers[prevAnswerNumber]--;
-        } else {
+        } else if (typeof prevAnswerNumber == 'undefined') {
             quiz.userCount++;
         }
 
@@ -139,13 +145,16 @@ io.sockets.on('connection', function (socket) {
             quiz.answers[answerNumber]++;
         }
         quiz.users[userId] =  answerNumber;
-        console.log(quizzes);
+        //console.log('quiz');
+        //console.log(quizzes);
         var clientQuiz = {
             'quiz': quizNumber,
             'totalUsers': connectedUsers.count,
             'userCount': quiz.userCount,
             'answers': quiz.answers
         };
+        //console.log('console quiz');
+        //console.log(clientQuiz);
         io.sockets.emit('answerUpdate', clientQuiz);
     });
 
@@ -154,11 +163,48 @@ io.sockets.on('connection', function (socket) {
         questions.push({
             'question': question,
             'chatId': chatIdCreator,
-            'userId': socket.userId
+            'userId': socket.userId,
+            'upvotes': 1,
+            'upvotesUsers': [socket.userId]
         });
         chatRoom[chatIdCreator] = [];
         chatIdCreator += 7;
         io.sockets.emit('questionsUpdate', questions);
+    });
+
+    // Sends back responses according to chat room
+    socket.on('getChatResponse', function(room) {
+        var newData = {};
+        newData.chatId = room;
+        newData.response = chatRoom[room];
+        console.log(newData);
+        socket.emit('chatResponse', newData);
+    });
+
+    // Recieves student response to a questions
+    socket.on('sendChat', function(data) {
+        if (chatRoom[data.chatId]) {
+            chatRoom[data.chatId].push(data.response);    
+        } else {
+            var chatResponses = chatRoom[data.chatId] = new Array();
+            chatResponses.push(data.response);
+        }
+        var newData = {};
+        newData.chatId = data.chatId;
+        newData.response = chatRoom[data.chatId];
+        console.log(newData);
+
+        io.sockets.emit('chatResponse', newData);
+    });
+
+    // Tally upvotes
+    socket.on('tallyUpvote', function(question) {
+        question = question.replace('ques', '');
+        if (questions[question]['upvotesUsers'].indexOf(socket.userId) == -1) {
+            questions[question]['upvotes']++;
+            questions[question]['upvotesUsers'].push(socket.userId);
+        }
+        socket.emit('questionsUpdate', questions);
     });
 });
 

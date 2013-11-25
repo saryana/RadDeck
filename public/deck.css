@@ -211,7 +211,11 @@ label {
 #question-tabs {
     height: 16%;
 }
-
+.upvote {
+    font-size: .4em;
+    margin-right: 5px;
+    margin-left: -5px;
+}
 .question {
     cursor: pointer;
 }
