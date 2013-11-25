@@ -36,8 +36,25 @@ $(document).on('click', 'input[type="radio"]', function (e) {
         'quiz': quiz,
         'answer': answer
     };
-
     socket.emit('submitAnswer', answerObj);
+});
+$(document).keydown(function(event) {
+    console.log(event.keyCode);
+    var increment = 0;
+    switch (event.keyCode) {
+        case 37:
+        case 38:
+            increment = -1;
+            break;
+        case 32:
+        case 39:
+        case 40:
+            increment = 1;
+            break;
+        default:
+            return;
+    }
+    moveBy(increment);
 });
 
 // Moves slides accordingly 
