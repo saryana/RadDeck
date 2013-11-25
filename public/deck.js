@@ -258,7 +258,7 @@ function addQuestions(data) {
     var $chatB = $('#chat-box');
     $q.empty();
     $.each(data, function (index, obj) {
-        var $qdiv = $('<span class="upvote" id="ques' + index + '"><img src="/vote.png" style="width:1em"> ' + obj.upvotes + '</span><span class="question" id="' + obj.chatId + '">'+obj.question+'</span><span class="author">' + obj.userId + '</span><span class="date">' + (new Date(obj.dateTime).toLocaleTimeString()) +  '</span></br>');
+        var $qdiv = $('<span class="upvote" id="ques' + index + '"><img src="/vote.png" style="width:1em"> ' + obj.upvotes + '</span><span class="question" id="' + obj.chatId + '">'+obj.question.replace(/</g, '&lt;')+'</span><span class="author">' + obj.userId + '</span><span class="date">' + (new Date(obj.dateTime).toLocaleTimeString()) +  '</span></br>');
         $('#question-list').append($qdiv);
         $('.upvote').click(function() {
             var questionNum = this.id;
