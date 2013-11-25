@@ -39,7 +39,7 @@ $(document).on('click', 'input[type="radio"]', function (e) {
     socket.emit('submitAnswer', answerObj);
 });
 $(document).keydown(function(event) {
-    console.log(event.keyCode);
+    //console.log(event.keyCode);
     var increment = 0;
     switch (event.keyCode) {
         case 37:
@@ -253,8 +253,9 @@ socket.on('connect', function () {
 function orderNewest(data) {
     if (data) {
         data.sort(function (a, b) {
-            return b.DateTime - a.DateTime;
+            return new Date(a.dateTime) - new Date(b.dateTime);
         });
+       // console.log(data);
         addQuestions(data);
     }
 }
