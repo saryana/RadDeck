@@ -302,7 +302,7 @@ function addQuestions(data) {
         var $chatArea = $('chat-area');
 
         var question = $(this).text();
-        question = question.substring(question.indexOf(' ')+1, question.length);
+        //question = question.substring(question.indexOf(' ')+1, question.length);
         $('#chat-title').text(question);
         $('#chat-send-box').on('keydown', function(e) {
             if (e.keyCode == '13') {
