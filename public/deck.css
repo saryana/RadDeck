@@ -209,8 +209,21 @@ label {
 }
 
 #question-tabs {
-    height: 16%;
+    height: 3em;
 }
+
+#question-list {
+    position: absolute;
+    top: 1.2em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-left: 0.5em;
+    background: #ccd;
+    border: 0.05em solid #889;
+    overflow-y: scroll;
+}
+
 .upvote {
     font-size: .4em;
     margin-right: 5px;
@@ -264,7 +277,14 @@ label {
 }
 
 #question-text {
-    width: 100%;
+    float: left;
+    width: 80%;
+}
+
+#submit-question {
+    float: left;
+    width: 19%;
+    font-size: 1em;
 }
 
 .menu-tabs {
@@ -285,7 +305,7 @@ label {
 }
 
 .menu-tab.on {
-    background: #eee;
+    background: #ccd;
 }
 
 .disabled, .disabled:hover {
