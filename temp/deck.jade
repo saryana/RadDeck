@@ -1,7 +1,7 @@
 !!! 5
 html
     head
-        title Askedu
+        title AskEdu
         link(rel='stylesheet', href='/deck.css')
         link(rel='shortcut icon', href='/favicon.ico')
     body
@@ -26,52 +26,56 @@ html
                             button#submit-question Submit
                         div: textarea#question-text
                     #chat-res
-                        input#chat-send-box(type='text' name='chat-response')
+                        input#chat-send-box(type='text', name='chat-response')
                         button#submit-chat Send
         #slides
             #slide-area
+
                 .slide
                     img.bg(src='/auditorium.jpg')
-                    h2 What is Askedu?
-                    ul
-                        li Real-time
-                        li Audience
-                        li Dialogue
-                .slide
-                    img.bg(src='/sleeping.jpg')
-                    h2 Questions
-                    ul
-                        li Students ask
-                        li Students vote
-                        li Professors answer
-                .slide
-                    h2 Competitors
-                    ol
-                        li
-                            a(href='http://echo360.com/') Echo360
-                        li
-                            a(href='http://eclicker.com/') eClicker
-                .slide.quiz
-                    div.log
-                    h2 Sample Quiz Slide 1
-                    p x + 2 = 5, find x.
-                    ul
-                        li 1
-                        li 2
-                        li 3
-                        li 4
+                    h2 Problem
+                    ul(style='font-size:0.9em')
+                        li 92% of students are distracted by devices
+                        li Lectures are one-way
+                        li Hard to ask questions in large classes
 
+                .slide
+                    img.bg(src='/solution.png')
+
+                .slide
+                    img.bg(src='/quad.jpg')
+                    h2 Market
+                    ul
+                        div(style="margin-left:-1em") US
+                        li 4,500+ Degree-granting instutions
+                        li 20.3 million college students
+                        li Echo360 raised $31 million in 2012
+
+                .slide
+                    img.bg(src='/quad.jpg')
+                    h2 Go To Market Strategy
+                    ul
+                        li Focus on higher learning
+                        li Get early adopters
+                        li Free for instructors
 
                 .slide.quiz
-                    div.log
-                    h2 Sample Quiz Slide 2
-                    p 3x = 6, find x.
+                    img.bg(src='/kanye.jpg')
+                    h2 Which rapper quote most embodies AskEdu?
                     ul
-                        li 1
-                        li 2
-                        li 3
-                        li 4
+                        li U can't touch this
+                        li.correct Stop, collaborate and listen
+                        li I'mma let you finish
+                    .progress: .gap: .log
 
+                .slide
+                    img.bg(src='/team.jpg')
+                    h2 Questions?
+                    ul
+                        li Sam Eubank - Engineer
+                        li Katie Fraser - Biz Dev
+                        li Janna Jacobson - Educator
+                        li Sean Aryana - Engineer
 
         script(src='/zepto.js')
         script(src='/socket.io/socket.io.js')

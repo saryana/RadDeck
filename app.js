@@ -31,7 +31,7 @@ app.get('/', function(req, res) {
 });
 
 // Checks if student is registered
-app.post('/deck', function(req, res) {
+app.post('/login', function(req, res) {
     var studentId = req.body.studentId.toLowerCase();
     if (users[studentId]) {
         res.cookie('studentId', studentId);
@@ -39,6 +39,11 @@ app.post('/deck', function(req, res) {
     } else {
         res.render('login');
     }
+});
+
+// Checks if student is registered
+app.get('/login', function(req, res) {
+    res.render('login');
 });
 
 // If student is logged in will go straight to decks
