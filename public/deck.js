@@ -130,14 +130,14 @@ var currentQuestionList;
 // Changes to question view
 $('#top-questions').click(function () {
     hideChat();
-    $('.on').removeClass('on');
+    $('#question-tabs .on').removeClass('on');
     $(this).addClass('on');
     console.log(currentQuestionList);
     orderUpvotes(currentQuestionList);
 });
 $('#new-questions').click(function() {
     hideChat();
-    $('.on').removeClass('on');
+    $('#question-tabs .on').removeClass('on');
     $(this).addClass('on');
     console.log(currentQuestionList);
     orderNewest(currentQuestionList);
