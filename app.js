@@ -63,10 +63,10 @@ var io = require('socket.io').listen(app.listen(port), { log: false });
 
 io.sockets.on('connection', function (socket) {
     // Emit existing results
-    for (var i = 0; i < questions.length; i++) {
-        io.sockets.emit('questionsUpdate', questions[i]);
+    io.sockets.emit('questionsUpdate', questions);
+    for (var i = 0; i < quizzes.length; i++) {
+        io.sockets.emit('answerUpdate', quizzes[i]);
     }
-
     // Adds user and all the devices it is connecting from
     socket.on('setUser', function (userId) {
         socket.userId = userId;
@@ -126,8 +126,10 @@ io.sockets.on('connection', function (socket) {
         var quiz = quizzes[quizNumber];
         if (!quiz) {
             quiz = quizzes[quizNumber] = {
+                'quiz': quizNumber,
                 'answers': [],
                 'userCount': 0,
+                'totalUsers': connectedUsers.count,
                 'users': {}
             };
         }
@@ -153,9 +155,10 @@ io.sockets.on('connection', function (socket) {
             'userCount': quiz.userCount,
             'answers': quiz.answers
         };
+        quiz.totalUsers = connectedUsers.count;
         //console.log('console quiz');
         //console.log(clientQuiz);
-        io.sockets.emit('answerUpdate', clientQuiz);
+        io.sockets.emit('answerUpdate', quiz);
     });
 
     // Posting questions
