@@ -72,6 +72,13 @@
 	  {"lastName": "Tullis", "firstName": "Josiah", "id": "jtullis"},
 	  {"lastName": "Woodard", "firstName": "Samuel", "id": "swoodard"},
 	  {"lastName": "Xu", "firstName": "Steven", "id": "sxu"},
-	  {"lastName": "Yusuf", "firstName": "Hauwa", "id": "hyusuf"}
+	  {"lastName": "Yusuf", "firstName": "Hauwa", "id": "hyusuf"},
+	  {"lastName": "Cooper", "firstName": "James", "id": "jcooper"},
+	  {"lastName": "Lovell", "firstName": "Rebecca", "id": "rlovell"},
+	  {"lastName": "Setephens", "firstName": "Dale", "id": "dsetephens"},
+	  {"lastName": "Wright", "firstName": "Charles", "id": "cwright"},
+	  {"lastName": "Sing", "firstName": "Kishari", "id": "ksing"},
+	  {"lastName": "user", "firstName": "guest", "id": "guest"}
+
 	]
 }
