@@ -243,6 +243,7 @@ function orderNewest(data) {
 }
 
 function orderUpvotes(data) {
+    console.log(data);
     if (data) {
         data.sort(function (a, b) {
             return b.upvotes - a.upvotes;
