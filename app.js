@@ -210,3 +210,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 console.log("Listening on port " + port);
+
+process.on('uncaughtException', function(err) {
+    console.log('Caught exception: ' + err);
+});
