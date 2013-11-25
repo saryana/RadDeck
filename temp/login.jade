@@ -1,10 +1,23 @@
-!!! 5
+doctype 5
 html
     head
-        title RadDeck
-        link(rel='shortcut icon', href='/favicon.ico')
+        title AskEdu - Sign in
+        link(rel="stylesheet", href="/site.css")
+        meta(name="viewport", content="width=device-width,initial-scale=1")
     body
-        form(method="post")
-            Please Enter your first name initial followed by your last name. 
-            input(type="text", name="studentId")
-            input(type="submit", value="Submit")
+        #stripe
+            .panel
+        #head
+            .panel
+                a#logo(href="/")
+                    img(src="/logo.png")
+                    <span>Ask</span>edu<span style="font-size:0.8em">.co</span>
+                h1 Please go to <a href="http://askedu.co/login">http://askedu.co/login</a>
+        #feature
+            form.panel(method="post")
+                h2(style="color:#fff") Sign in with first initial plus your last name.
+                h2(style="color:#fff") If at first you don't succeed, try "guest".
+                input(type="text", name="studentId")
+                input(type="submit", value="Sign In", style="background:#d6a810;font-weight:bold;")
+            style
+                input { font: 18px Arial; border: 0; border-radius: 8px; padding: 6px; }

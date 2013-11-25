@@ -4,6 +4,8 @@ var onResize = function () {
     var s = Math.min(w / 15, h / 9);
     $('body').css('fontSize', s + 'px');
     $('textarea').css('fontSize', (s * 0.8) + 'px');
+    $('input[type=radio]').css('zoom', (s * 7) + '%');
+    console.log($('input[type=radio]').length);
 };
 
 $('img.bg').each(function () {
@@ -13,9 +15,6 @@ $('img.bg').each(function () {
     $bg = $(bg);
     $bg.insertBefore(parent);
 });
-
-//$('h2').wrap('<div style="background:url(/double-shade.png);width:100%;"/>');
-//$('ol,dl').wrap('<div style="background:url(/shade.png);width:100%;"/>');
 
 var userId = document.cookie.split('=')[1].toLowerCase();
 
@@ -29,14 +28,14 @@ $('.quiz').each(function (index, quiz) {
 });
 
 // Submits the answer to a question
-$(document).on('click', 'input', function (e) {
+$(document).on('click', 'input[type=radio]', function (e) {
     var quiz = this.name;
     var answer = this.value;
     var answerObj = {
         'userId': userId,
         'quiz': quiz,
         'answer': answer
-    }
+    };
 
     socket.emit('submitAnswer', answerObj);
 });
@@ -165,17 +164,20 @@ socket.on('connect', function () {
         var quiz = clientQuiz.quiz,
             userCount = clientQuiz.userCount,
             totalUsers = clientQuiz.totalUsers,
-            progress = (userCount/totalUsers)*100,
+            progress = Math.min(1, userCount / totalUsers) * 100,
             quiz = clientQuiz.quiz,
             $log = $($quizProgesses[quiz]),
             answers = clientQuiz.answers;
         if (progress > 80) {
-            $($('.quiz').get(quiz)).find('.answerlog').show();
+            $quiz = $($('.quiz').get(quiz));
+            $quiz.find('.answerlog').show();
+            $quiz.find('li:not(.correct) label').addClass('faded');
+            $quiz.find('.correct').css('fontWeight', 'bold');
         }
         $log.css('width', progress + '%');
         $.each(answers, function (index, answer) {
             var search = '#qa' + quiz + index;
-            $(search).css('width', (answer/totalUsers)*100 + '%');
+            $(search).css('width', Math.min(1, answer / totalUsers) * 100 + '%');
         });
     });
 

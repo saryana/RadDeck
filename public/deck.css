@@ -13,11 +13,11 @@ body, textarea {
 
 h2 {
     font-size: 1.3em;
-    white-space: nowrap;
     background: url(/double-shade.png);
     margin: 0.5em 0;
-    padding: 0.5em 1em;
-    text-shadow: 0.1em 0.1em #000;
+    padding: 0.4em 1em 0.1em 0.5em;
+    color: #000;
+    text-shadow: 0.1em 0.1em 0.1em #d6a810;
 }
 
 li {
@@ -28,8 +28,9 @@ ol, ul, p {
     margin-left: 1em;
     background: url(/shade.png);
     margin: 0;
-    padding: 0.5em 1em 0.5em 3em;
-    text-shadow: 0.1em 0.1em #000;
+    padding: 0.5em 0.5em 0.5em 2em;
+    color: #fff;
+    text-shadow: 0.1em 0.1em 0.1em #000;
 }
 
 #menu {
@@ -102,7 +103,6 @@ ol, ul, p {
     position: absolute;
     z-index: 1;
     background: #000;
-    color: #fff;
     top: 0;
     bottom: 0;
     left: 1.6em;
@@ -114,6 +114,7 @@ ol, ul, p {
     left: 0;
     top: 0;
     width: 100%;
+    height: 100%;
     opacity: 0;
     display: none;
     transition: opacity 0.5s;
@@ -136,30 +137,62 @@ ol, ul, p {
     list-style-type: none;
 }
 
+.quiz li {
+    line-height: 2em;
+    position: relative;
+}
+
+.quiz ul {
+    padding-left: 1em;
+}
+
+input[type=radio] {
+    margin: 0 0.5em;
+}
+
+label {
+    display: block;
+    background: url(/shade.png)
+}
+
+.progress {
+    border: 0.05em solid #889;
+    padding: 0.05em;
+    background: #112;
+    position: absolute;
+    bottom: 0.05em;
+    left: 0.05em;
+    right: 0.05em;
+}
+
 .log {
     width: 0%;
-    transition: width 0.5s;
-    margin-left: 20%;
-    background-color: gray;
+    background: #889;
     height: 1em;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    bottom: 0;
+    transition: width 0.5s;
 }
 
 .answerlog {
-    transition: width 0.5s;
-    z-index: -10;
     position: absolute;
+    bottom: 0;
+    transition: width 0.5s;
+    z-index: 5;
     width: 0%;
-    height: 24px;
-    background-color: rgb(180, 180, 214);
+    height: 0.4em;
+    background: #c00;
+}
+
+.correct .answerlog {
+    background: #090;
+}
+
+.faded {
+    opacity: 0.5;
 }
 
 #slide-area {
     position: relative;
-    padding-left: 1em;
+    height: 100%;
 }
 
 .menu-pad {
