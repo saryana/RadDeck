@@ -253,7 +253,7 @@ socket.on('connect', function () {
 function orderNewest(data) {
     if (data) {
         data.sort(function (a, b) {
-            return new Date(a.dateTime) - new Date(b.dateTime);
+            return new Date(b.dateTime) - new Date(a.dateTime);
         });
        // console.log(data);
         addQuestions(data);
