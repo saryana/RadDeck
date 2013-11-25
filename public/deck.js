@@ -5,7 +5,7 @@ var onResize = function () {
     $('body').css('fontSize', s + 'px');
     $('textarea').css('fontSize', (s * 0.8) + 'px');
     $('input[type=radio]').css('zoom', (s * 7) + '%');
-    console.log($('input[type=radio]').length);
+    //console.log($('input[type=radio]').length);
 };
 
 $('img.bg').each(function () {
@@ -132,14 +132,14 @@ $('#top-questions').click(function () {
     hideChat();
     $('#question-tabs .on').removeClass('on');
     $(this).addClass('on');
-    console.log(currentQuestionList);
+    //console.log(currentQuestionList);
     orderUpvotes(currentQuestionList);
 });
 $('#new-questions').click(function() {
     hideChat();
     $('#question-tabs .on').removeClass('on');
     $(this).addClass('on');
-    console.log(currentQuestionList);
+    //console.log(currentQuestionList);
     orderNewest(currentQuestionList);
 });
 
@@ -181,7 +181,7 @@ socket.on('connect', function () {
 
     // Update the progress of the quizzes
     socket.on('answerUpdate', function(clientQuiz) {
-        console.log(clientQuiz);
+       // console.log(clientQuiz);
         var quiz = clientQuiz.quiz,
             userCount = clientQuiz.userCount,
             totalUsers = clientQuiz.totalUsers,
@@ -219,7 +219,7 @@ socket.on('connect', function () {
 
     // Receives the responses for a chat room
     socket.on('chatResponse', function(chatResponse) {
-        console.log('Here is the data from for room ' + chatResponse.chatId);
+        //console.log('Here is the data from for room ' + chatResponse.chatId);
         if (chatResponse.chatId == currentChatThread) {
             $('#chat-area').empty();
 
@@ -243,7 +243,7 @@ function orderNewest(data) {
 }
 
 function orderUpvotes(data) {
-    console.log(data);
+    //console.log(data);
     if (data) {
         data.sort(function (a, b) {
             return b.upvotes - a.upvotes;
@@ -278,29 +278,35 @@ function addQuestions(data) {
         var chatId = this.id;
         currentChatThread = chatId;
 
-        console.log('Getting responses from ' + chatId);
+        //console.log('Getting responses from ' + chatId);
         socket.emit('getChatResponse', chatId);
-        console.log('Now viweing content form ' + currentChatThread);
+       // console.log('Now viweing content form ' + currentChatThread);
 
         var $chatArea = $('chat-area');
 
         var question = $(this).text();
         question = question.substring(question.indexOf(' ')+1, question.length);
         $('#chat-title').text(question);
-
+        $('#chat-send-box').on('keydown', function(e) {
+            if (e.keyCode == '13') {
+                $('#submit-chat').click();
+            }
+        });
         // Handles sending chat messages to specific chatroom
         $('#submit-chat').unbind('click').bind('click', function() {
             var chatTextRes = $('#chat-send-box').val();
             $('#chat-send-box').val('');
             var data = {};
-            console.log('sending: ' + currentChatThread);
+           // console.log('sending: ' + currentChatThread);
             data['chatId'] = currentChatThread;
             data['response'] = chatTextRes;
             socket.emit('sendChat', data);
+            $('#chat-send-box').focus();
         });
 
     });
 }
+
 function hideChat() {
     var $q = $('#question-list');
     var $chatRes = $('#chat-res');
