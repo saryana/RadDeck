@@ -57,10 +57,10 @@ var masterSocket;
 var io = require('socket.io').listen(app.listen(port), { log: false });
 
 io.sockets.on('connection', function (socket) {
-    /* Emit existing results
+    // Emit existing results
     for (var i = 0; i < questions.length; i++) {
         io.sockets.emit('questionsUpdate', questions[i]);
-    }*/
+    }
 
     // Adds user and all the devices it is connecting from
     socket.on('setUser', function (userId) {
@@ -159,6 +159,7 @@ io.sockets.on('connection', function (socket) {
             'question': question,
             'chatId': chatIdCreator,
             'userId': socket.userId,
+            'dateTime': new Date(),
             'upvotes': 1,
             'upvotesUsers': [socket.userId]
         });
@@ -199,7 +200,7 @@ io.sockets.on('connection', function (socket) {
             questions[question]['upvotes']++;
             questions[question]['upvotesUsers'].push(socket.userId);
         }
-        socket.emit('questionsUpdate', questions);
+        io.sockets.emit('questionsUpdate', questions);
     });
 });
 

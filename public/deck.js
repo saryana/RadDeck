@@ -125,19 +125,24 @@ var socket = io.connect(location.protocol + '//' + location.host);
 var isFollowing = true;
 var $quizProgesses = $('.log');
 var currentChatThread = 0;
-
+var currentQuestionList;
 
 
 // Changes to question view
-$('#top-questions').click(questionView);
-$('#new-questions').click(questionView);
-function questionView() {
-    $('#chat-res').hide();
-    $('#ask-question').show();
-    $('#question-list').show();
-    $('#chat-box').hide()
-    currentChatThread = 0;
-}
+$('#top-questions').click(function () {
+    hideChat();
+    $('.on').removeClass('on');
+    $(this).addClass('on');
+    console.log(currentQuestionList);
+    orderUpvotes(currentQuestionList);
+});
+$('#new-questions').click(function() {
+    hideChat();
+    $('.on').removeClass('on');
+    $(this).addClass('on');
+    console.log(currentQuestionList);
+    orderNewest(currentQuestionList);
+});
 
 $('.answerlog').hide(); // Not sure where to implement these
 $('#showAnswer').hide();
@@ -203,51 +208,13 @@ socket.on('connect', function () {
         var $chatRes = $('#chat-res');
         var $askQ = $('#ask-question');
         var $chatB = $('#chat-box');
-        console.log(data);
 
-        $q.empty();
-        $.each(data, function (index, obj) {
-            var $qdiv = $('<span class="upvote" id="ques' + index + '">' + obj.upvotes + '</span><span class="question" id="' + obj.chatId + '">'+obj.question+'</span></br>');
-            $q.append($qdiv);
-            console.log($qdiv);
-        });
-
-        $('.upvote').click(function() {
-            var questionNum = this.id;
-            socket.emit('tallyUpvote', questionNum);
-        });
-
-        // Handles question clicking and moving to chatroom
-        $('.question').click(function() {
-            $q.hide();
-            $askQ.hide();
-            $chatRes.show();
-            $chatB.show();
-
-            var chatId = this.id;
-            currentChatThread = chatId;
-
-            console.log('Getting responses from ' + chatId);
-            socket.emit('getChatResponse', chatId);
-            console.log('Now viweing content form ' + currentChatThread);
-
-            var $chatArea = $('chat-area');
-
-            var question = $(this).text();
-            question = question.substring(question.indexOf(' ')+1, question.length);
-            $('#chat-title').text(question);
-
-            // Handles sending chat messages to specific chatroom
-            $('#submit-chat').unbind('click').bind('click', function() {
-                var chatTextRes = $('#chat-send-box').val();
-                $('#chat-send-box').val('');
-                var data = {};
-                console.log('sending: ' + currentChatThread);
-                data['chatId'] = currentChatThread;
-                data['response'] = chatTextRes;
-                socket.emit('sendChat', data);
-            });
-        });
+        currentQuestionList = data;
+        if ($('#new-questions').hasClass('on')) {
+            orderNewest(data);
+        } else {
+            orderUpvotes(data);
+        }
     });
 
     // Receives the responses for a chat room
@@ -265,6 +232,84 @@ socket.on('connect', function () {
     })
 
 });
+
+function orderNewest(data) {
+    if (data) {
+        data.sort(function (a, b) {
+            return b.DateTime - a.DateTime;
+        });
+        addQuestions(data);
+    }
+}
+
+function orderUpvotes(data) {
+    if (data) {
+        data.sort(function (a, b) {
+            return b.upvotes - a.upvotes;
+        });
+        addQuestions(data);
+    }
+}
+
+function addQuestions(data) {
+    var $q = $('#question-list');
+    var $chatRes = $('#chat-res');
+    var $askQ = $('#ask-question');
+    var $chatB = $('#chat-box');
+    $q.empty();
+    $.each(data, function (index, obj) {
+        var $qdiv = $('<span class="upvote" id="ques' + index + '">' + obj.upvotes + '</span><span class="question" id="' + obj.chatId + '">'+obj.question+'</span><span class="author">' + obj.userId + '</span><span class="date">' + (new Date(obj.dateTime).toLocaleTimeString()) +  '</span></br>');
+        $('#question-list').append($qdiv);
+        $('.upvote').click(function() {
+            var questionNum = this.id;
+            socket.emit('tallyUpvote', questionNum);
+        });
+
+    });
+
+    // Handles question clicking and moving to chatroom
+    $('.question').click(function() {
+        $q.hide();
+        $askQ.hide();
+        $chatRes.show();
+        $chatB.show();
+
+        var chatId = this.id;
+        currentChatThread = chatId;
+
+        console.log('Getting responses from ' + chatId);
+        socket.emit('getChatResponse', chatId);
+        console.log('Now viweing content form ' + currentChatThread);
+
+        var $chatArea = $('chat-area');
+
+        var question = $(this).text();
+        question = question.substring(question.indexOf(' ')+1, question.length);
+        $('#chat-title').text(question);
+
+        // Handles sending chat messages to specific chatroom
+        $('#submit-chat').unbind('click').bind('click', function() {
+            var chatTextRes = $('#chat-send-box').val();
+            $('#chat-send-box').val('');
+            var data = {};
+            console.log('sending: ' + currentChatThread);
+            data['chatId'] = currentChatThread;
+            data['response'] = chatTextRes;
+            socket.emit('sendChat', data);
+        });
+
+    });
+}
+function hideChat() {
+    var $q = $('#question-list');
+    var $chatRes = $('#chat-res');
+    var $askQ = $('#ask-question');
+    var $chatB = $('#chat-box');
+    $chatRes.hide();
+    $chatB.hide();
+    $q.show();
+    $askQ.show();
+}
 
 // Uncomment for seeing changes quickly.
 setTimeout(function () {
